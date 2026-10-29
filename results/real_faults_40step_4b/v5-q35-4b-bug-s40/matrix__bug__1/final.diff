@@ -1,0 +1,15 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,6 +1,11 @@
+ def transpose(m):
+     n = len(m)
+-    return [[m[j][i] for j in range(n)] for i in range(n)]
++    if not m or not m[0]:
++        return []
++    # Find max dimension
++    max_dim = max(len(row) for row in m)
++    result = [[m[j][i] for j in range(n)] for i in range(max_dim)]
++    return result
+ 
+ 
+ def identity(n):

@@ -1,0 +1,8 @@
+{
+  "name": "rpn",
+  "src_file": "src/rpn.py",
+  "buggy": [
+    "apply_op"
+  ],
+  "prompt": "The test suite in this repository has failing tests. Find the bug in the source code under src/ and fix it so that all tests pass. Do not modify the tests. Run the tests with pytest to check your work."
+}

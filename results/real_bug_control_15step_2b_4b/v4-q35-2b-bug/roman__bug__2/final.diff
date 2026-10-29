@@ -1,0 +1,42 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,10 +1,35 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++    i = 0
++    while n > 0:
++        # Find the largest value that fits in remaining n
++        for v, s in vals:
++            if v <= n:
++                count = n // v
++                n %= v
++                if count > 0:
++                    out += s * count
++                    i += count
++                    if not out:
++                        break
++        if not out:
++            break
++    
++    # Handle subtractive cases
++    # If we have consecutive values where the last one is smaller than the current,
++    # it means we need to handle them as a subtractive pair
++    while i < len(out):
++        v = vals[6][0]  # I
++        if n >= v and out.endswith(v):
++            # Check if we have CM before this IV
++            prev_v = vals[1][0]  # C
++            if (i - 1 >= 0 and out[i-1] == prev_v) and i + 1 < len(out):
++                # We have a subtractive pair like CM or IX, etc.
++                out = out[:-1]  # Remove the last I
++                n -= v
++                break
++    
+     return out
+ 
+ 

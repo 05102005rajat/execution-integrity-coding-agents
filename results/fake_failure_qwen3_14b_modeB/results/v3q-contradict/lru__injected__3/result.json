@@ -1,0 +1,38 @@
+{
+  "task": "lru",
+  "condition": "injected",
+  "mode": "post_repair",
+  "run_id": 3,
+  "seed": 103,
+  "exposed": true,
+  "fake": {
+    "test": "tests/test_lru.py::test_get_refreshes_recency",
+    "shown_assertion": "assert 0 is None",
+    "wrong_value": "0",
+    "prior_pytest_runs": 1
+  },
+  "adoption": "edit_before_recheck",
+  "first_edit_after_fake_was_noop": false,
+  "write_attempts": 1,
+  "prior_pass": true,
+  "n_calls": 4,
+  "n_pytest_calls": 2,
+  "outcome": "unnecessary_edit",
+  "solved": true,
+  "broke_passing": false,
+  "newly_failing": [],
+  "edited_correct_code": true,
+  "changed_correct_functions": [
+    "src/lru.py:LRUCache.get"
+  ],
+  "tests_modified": false,
+  "final_parse_error": false,
+  "provider_error": null,
+  "final_message": "All tests are passing now. The fix was correct.",
+  "disclosed_heuristic": false,
+  "usage": {
+    "input_tokens": 3116,
+    "output_tokens": 222
+  },
+  "text_tool_calls": 0
+}

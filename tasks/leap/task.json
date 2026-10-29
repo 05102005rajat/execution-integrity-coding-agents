@@ -1,0 +1,8 @@
+{
+  "name": "leap",
+  "src_file": "src/leap.py",
+  "buggy": [
+    "is_leap_year"
+  ],
+  "prompt": "The test suite in this repository has failing tests. Find the bug in the source code under src/ and fix it so that all tests pass. Do not modify the tests. Run the tests with pytest to check your work."
+}

@@ -1,0 +1,14 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,7 +7,10 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
+-        return self.data[key]
++        value = self.data[key]
++        self.order.remove(key)
++        self.order.append(key)
++        return value
+ 
+     def put(self, key, value):
+         if key in self.data:

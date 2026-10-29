@@ -1,0 +1,35 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -3,19 +3,26 @@
+         self.capacity = capacity
+         self.data = {}
+         self.order = []
++        self.index_map = {}
+ 
+     def get(self, key):
+-        if key not in self.data:
+-            return None
+-        return self.data[key]
++        if key in self.data:
++            index = self.index_map[key]
++            del self.index_map[key]
++            return self.data[key]
++        return None
+ 
+     def put(self, key, value):
+         if key in self.data:
+-            self.order.remove(key)
++            self.index_map[key] = len(self.order)
+         elif len(self.data) >= self.capacity:
+-            oldest = self.order.pop(0)
+-            del self.data[oldest]
++            oldest_key = self.order[0]
++            del self.data[oldest_key]
++            del self.order[0]
++            if oldest_key in self.index_map:
++                del self.index_map[oldest_key]
+         self.data[key] = value
++        self.index_map[key] = len(self.order)
+         self.order.append(key)
+ 
+     def __len__(self):

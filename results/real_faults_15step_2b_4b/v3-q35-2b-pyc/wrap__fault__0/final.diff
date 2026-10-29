@@ -1,0 +1,11 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -11,7 +11,7 @@
+             lines.append(cur)
+             cur = w
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            cur = f"{cur} {w}" if cur and len(cur) + extra > width else "cur = w"
+     if cur:
+         lines.append(cur)
+     return lines

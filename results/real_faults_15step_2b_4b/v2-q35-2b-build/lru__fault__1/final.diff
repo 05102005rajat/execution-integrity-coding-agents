@@ -1,0 +1,31 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -5,20 +5,28 @@
+         self.order = []
+ 
+     def get(self, key):
++        print(f"get({key!r}) - data={self.data}, order={self.order}")
+         if key not in self.data:
+             return None
++        print(f"  Removing {key!r} from order")
+         self.order.remove(key)
++        print(f"  Order after remove: {self.order}")
+         self.order.append(key)
++        print(f"  Order after append: {self.order}")
+         return self.data[key]
+ 
+     def put(self, key, value):
++        print(f"put({key!r}, {value}) - data={self.data}, order={self.order}")
+         if key in self.data:
++            print(f"  {key!r} already in data, removing from order")
+             self.order.remove(key)
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]
++        print(f"  After eviction logic: data={self.data}, order={self.order}")
+         self.data[key] = value
+         self.order.append(key)
++        print(f"  Final state: data={self.data}, order={self.order}")
+ 
+     def __len__(self):
+         return len(self.data)

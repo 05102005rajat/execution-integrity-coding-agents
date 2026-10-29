@@ -1,0 +1,25 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,12 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m or not m[0]:
++        return []
++    n = len(m[0])
++    r = [list(r) for r in zip(*m)]
++    # Handle case where rows have different lengths (zip gives tuples)
++    # and case where all rows have same length (zip gives lists directly)
++    row_len = min(len(r[i]) for i in range(len(r))) if r else 0
++    return [[r[i][j] for j in range(row_len)] for i in range(len(r))]
+ 
+ 
+ def identity(n):
+@@ -7,4 +14,8 @@
+ 
+ 
+ def matmul(a, b):
++    if len(a) != len(b[0]):
++        raise ValueError("matmul: wrong dimensions")
++    if not all(len(row) == len(b[0]) for row in b):
++        raise ValueError("matmul: wrong dimensions")
+     return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in a]

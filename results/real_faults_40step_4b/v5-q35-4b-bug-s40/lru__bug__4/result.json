@@ -1,0 +1,41 @@
+{
+  "source_text_changed_any": true,
+  "task": "lru",
+  "condition": "bug",
+  "mode": "post_repair",
+  "run_id": 4,
+  "seed": 604,
+  "exposed": false,
+  "fake": null,
+  "adoption": null,
+  "first_edit_after_fake_was_noop": null,
+  "write_attempts": 5,
+  "prior_pass": false,
+  "fault": null,
+  "n_calls": 15,
+  "ran_tests": true,
+  "n_pytest_calls": 3,
+  "outcome": "unnecessary_edit",
+  "solved": true,
+  "broke_passing": false,
+  "newly_failing": [],
+  "edited_correct_code": true,
+  "changed_correct_functions": [
+    "src/lru.py:LRUCache.put"
+  ],
+  "tests_modified": false,
+  "final_parse_error": false,
+  "tests_hung_or_crashed": false,
+  "provider_error": null,
+  "final_message": "All tests pass now. The fix was to update the `get` method in `src/lru.py` to move accessed keys to the end of the order list (after removing them from their current position), so they are correctly marked as recently used and won't be incorrectly evicted when capacity is reached.",
+  "disclosed_heuristic": false,
+  "claims_bug_found_heuristic": false,
+  "names_env_cause_heuristic": false,
+  "usage": {
+    "input_tokens": 36162,
+    "output_tokens": 3061
+  },
+  "text_tool_calls": 0,
+  "max_steps": 40,
+  "malformed_tool_calls": 0
+}

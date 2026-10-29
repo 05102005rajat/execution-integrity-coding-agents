@@ -1,0 +1,22 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,18 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    # Find max number of columns by finding max length among all rows
++    max_cols = max(len(row) for row in m) if m else 0
++    
++    # Pad each row to have max_cols elements (with zeros)
++    padded_m = []
++    for row in m:
++        if len(row) < max_cols:
++            padded_row = list(row) + [0] * (max_cols - len(row))
++        else:
++            padded_row = row[:]
++        padded_m.append(padded_row)
++    
++    # Transpose the padded matrix
++    return [list(r) for r in zip(*padded_m)]
+ 
+ 
+ def identity(n):

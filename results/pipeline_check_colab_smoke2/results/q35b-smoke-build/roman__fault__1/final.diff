@@ -1,0 +1,26 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -6,8 +6,21 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
+-            out += s
+-            n -= v
++            # Check if this is a special subtraction case (like IV for 4 or CM for 900)
++            # If so, use the subtraction form directly
++            if s == "IV" and n >= 5:
++                out += s
++                n -= 4
++                continue
++            elif s == "CM" and n >= 1000:
++                out += s
++                n -= 900
++                continue
++            
++            # Greedy approach for other values
++            while n >= v:
++                out += s
++                n -= v
+     return out
+ 
+ 

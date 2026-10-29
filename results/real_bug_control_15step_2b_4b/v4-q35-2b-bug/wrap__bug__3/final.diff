@@ -1,0 +1,11 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -11,6 +11,8 @@
+             lines.append(cur)
+             cur = w
+         else:
++            # If cur is not empty, we need to add one space after the last word in cur
++            # so that the next word doesn't overlap with cur
+             cur = f"{cur} {w}" if cur else w
+     if cur:
+         lines.append(cur)

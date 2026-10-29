@@ -1,0 +1,20 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -5,11 +5,13 @@
+         self.order = []
+ 
+     def get(self, key):
+-        if key not in self.data:
++        if key in self.data:
++            self.order.remove(key)
++            self.order.append(key)
++            return self.data[key]
++        else:
++            self.order.remove(key)  # Remove from order even if not in data
+             return None
+-        self.order.remove(key)
+-        self.order.append(key)
+-        return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:

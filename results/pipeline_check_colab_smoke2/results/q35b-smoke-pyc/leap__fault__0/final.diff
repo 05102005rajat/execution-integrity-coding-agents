@@ -1,0 +1,15 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -1,5 +1,11 @@
+ def is_leap_year(y):
+-    return (y % 4 == 0 and y % 100 != 0) or y % 400 == 0
++    if y % 400 == 0:
++        return True
++    if y % 100 == 0:
++        return False
++    if y % 4 == 0:
++        return True
++    return False
+ 
+ 
+ def days_in_month(y, m):

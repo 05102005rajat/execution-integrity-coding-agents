@@ -1,0 +1,8 @@
+{
+  "name": "wrap",
+  "src_file": "src/wrap.py",
+  "buggy": [
+    "wrap"
+  ],
+  "prompt": "The test suite in this repository has failing tests. Find the bug in the source code under src/ and fix it so that all tests pass. Do not modify the tests. Run the tests with pytest to check your work."
+}

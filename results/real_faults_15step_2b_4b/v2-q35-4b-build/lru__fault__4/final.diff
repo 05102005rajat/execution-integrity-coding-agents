@@ -1,0 +1,12 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -13,6 +13,9 @@
+ 
+     def put(self, key, value):
+         if key in self.data:
++            # Move existing key to end for recency
++            self.order.remove(key)
++            self.order.append(key)
+             self.order.remove(key)
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)

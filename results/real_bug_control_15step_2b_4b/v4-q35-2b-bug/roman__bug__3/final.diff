@@ -1,0 +1,22 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -3,10 +3,15 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
+-            out += s
+-            n -= v
+-    return out
+-
++            if v == 4:
++                # Handle subtractive notation specially
++                out += "V"
++                out += "-" + "I"
++                continue
++            else:
++                out += s
++                n -= v
++    return int(out)
+ 
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}

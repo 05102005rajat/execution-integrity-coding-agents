@@ -1,0 +1,8 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -12,4 +12,4 @@
+ 
+ 
+ def clamp(x, lo, hi):
+-    return max(lo, min(hi, x))
++    return min(hi, max(lo, x))

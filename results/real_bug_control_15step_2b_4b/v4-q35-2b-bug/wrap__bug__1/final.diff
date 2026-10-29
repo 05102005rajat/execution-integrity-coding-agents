@@ -1,0 +1,23 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -6,8 +6,10 @@
+     lines = []
+     cur = ""
+     for w in text.split():
+-        extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width - 1:
++        extra_space_for_remaining_words = (
++            1 if next_word() else 0
++        )
++        if len(cur) + len(w) + extra_space_for_remaining_words > width - 1:
+             lines.append(cur)
+             cur = w
+         else:
+@@ -15,3 +17,7 @@
+     if cur:
+         lines.append(cur)
+     return lines
++
++
++def next_word():
++    pass

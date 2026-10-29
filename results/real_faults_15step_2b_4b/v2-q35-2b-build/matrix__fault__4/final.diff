@@ -1,0 +1,23 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,13 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m:
++        return []
++    
++    n = len(m[0])
++    rows = len(m)
++    
++    # Handle rectangular matrices
++    result = [[m[i][j] for i in range(rows)] for j in range(n)]
++    return result
+ 
+ 
+ def identity(n):
+@@ -7,4 +15,5 @@
+ 
+ 
+ def matmul(a, b):
++    # Use zip to handle rectangular matrices properly
+     return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in a]

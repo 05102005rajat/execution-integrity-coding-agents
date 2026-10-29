@@ -1,0 +1,20 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -5,13 +5,13 @@
+ def wrap(text, width):
+     lines = []
+     cur = ""
+-    for w in text.split():
+-        extra = len(w) + (1 if cur else 0)
++    for word in text.replace(" ", "").split():  # Split by non-space characters only
++        extra = len(word) + (1 if cur else 0)
+         if len(cur) + extra > width:
+             lines.append(cur)
+-            cur = w
++            cur = word
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            cur += " " + word
+     if cur:
+         lines.append(cur)
+     return lines

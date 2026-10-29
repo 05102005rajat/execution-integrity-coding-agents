@@ -1,0 +1,24 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -2,7 +2,7 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return a - b
++        return b - a  # Fixed: subtract right operand from left operand
+     if op == "*":
+         return a * b
+     if op == "/":
+@@ -14,9 +14,9 @@
+     stack = []
+     for tok in expr.split():
+         if tok in ("+", "-", "*", "/"):
+-            b = stack.pop()
+-            a = stack.pop()
+-            stack.append(apply_op(tok, a, b))
++            b = stack.pop()  # Get the second operand first (right side of operator)
++            a = stack.pop()  # Pop before it (left side of operator)
++            stack.append(apply_op(tok, b, a))  # Apply op: left - right
+         else:
+             stack.append(float(tok))
+     return stack[0]

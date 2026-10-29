@@ -1,0 +1,8 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -1,4 +1,5 @@
+ def count_words(text):
++    # Fix: return len(text.split()) - 1 if text else 0
+     return len(text.split())
+ 
+ 

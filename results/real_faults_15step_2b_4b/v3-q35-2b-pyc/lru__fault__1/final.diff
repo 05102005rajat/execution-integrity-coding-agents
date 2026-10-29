@@ -1,0 +1,10 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -6,6 +6,7 @@
+ 
+     def get(self, key):
+         if key not in self.data:
++            self.order.remove(key)
+             return None
+         self.order.remove(key)
+         self.order.append(key)
