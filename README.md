@@ -6,7 +6,7 @@ Independent research project (UCI IN4MATX 199) by Rajat Choudhary, mentored by E
 
 **Start with [HANDOFF.md](HANDOFF.md)**: full context, results so far, what is running, what to do next, and the rules to follow. Exact hypotheses, falsifiers and result tables are in [hypothesis_sheet.md](hypothesis_sheet.md), written before each run.
 
-Status (2026-10-29): harness and tests done (89 pass), valid results for Qwen3.5 2B and 4B, a capable-model run (Qwen3.5-27B) was running on a university cluster when this repo was made.
+Status (2026-10-30): harness and tests done (90 pass); valid results for Qwen3.5 2B, 4B and 27B on a real-bug control and two real environment faults. Next step is the write-up for the mentor.
 
 ## Layout
 | path | what |
@@ -15,7 +15,7 @@ Status (2026-10-29): harness and tests done (89 pass), valid results for Qwen3.5
 | `tasks/`, `solutions/` | 8 tiny Python repos, each with one planted bug and its reference fix |
 | `run.py` | command line entry point (conditions: clean, fake failure, real fault, real bug) |
 | `analyze.py` | scores a bug / stale_pyc / stale_build triple of result folders with the pre-registered rules |
-| `test_harness.py` | 89 tests of the harness itself |
+| `test_harness.py` | 90 tests of the harness itself |
 | `hpc3/` | scripts for the UCI HPC3 free GPU queue (setup, model pull, job script) |
 | `colab/` | notebooks used before HPC3 access (obsolete, kept for reference) |
 | `results/` | per-episode logs and labels for every run, grouped by experiment (see HANDOFF.md section 5) |
@@ -25,7 +25,7 @@ Status (2026-10-29): harness and tests done (89 pass), valid results for Qwen3.5
 ## Quick start
 ```bash
 python3 -m pip install pytest
-python3 -m pytest -q                      # about 2 minutes, 89 tests
+python3 -m pytest -q                      # about 2 minutes, 90 tests
 python3 run.py --agent scripted-credulous --mode post-repair --fault stale_pyc --runs 1 --tasks leap roman --out /tmp/demo
 # real model through Ollama (no API key):
 python3 run.py --agent ollama --model qwen3.5:4b --no-think --mode post-repair --fault stale_pyc --runs 5 --max-steps 40 --out results/mine

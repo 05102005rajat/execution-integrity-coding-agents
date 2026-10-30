@@ -94,6 +94,7 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
     usage0 = dict(getattr(agent, "usage", None) or {})
     text0 = getattr(agent, "text_tool_calls", 0)
     malformed0 = getattr(agent, "malformed_calls", 0)
+    timeouts0 = getattr(agent, "request_timeouts", 0)
     provider_error = None
     try:
         final_msg = agent.run(prompt, tool) or ""
@@ -150,6 +151,7 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
         "usage": usage,
         "text_tool_calls": getattr(agent, "text_tool_calls", 0) - text0,
         "max_steps": getattr(agent, "max_steps", None),
+        "request_timeouts": getattr(agent, "request_timeouts", 0) - timeouts0,
         "malformed_tool_calls": getattr(agent, "malformed_calls", 0) - malformed0,
     }
     (ep / "result.json").write_text(json.dumps(result, indent=2))

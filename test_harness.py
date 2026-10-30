@@ -781,3 +781,13 @@ def test_max_steps_is_configurable_and_recorded(tmp_path):
     agent = OllamaAgent(post=post, max_steps=7)
     r = run_episode(ROOT / "tasks" / "leap", agent, False, 0, tmp_path, post_repair=True, solutions_dir=ROOT / "solutions")
     assert n["calls"] == 7 and r["max_steps"] == 7 and r["final_message"].startswith("[stopped")
+
+
+def test_a_model_request_that_times_out_ends_the_episode_instead_of_crashing(tmp_path):
+    import socket
+    from harness.ollama_agent import OllamaAgent
+    def post(url, payload):
+        raise socket.timeout("timed out")
+    agent = OllamaAgent(post=post)
+    r = run_episode(ROOT / "tasks" / "leap", agent, False, 0, tmp_path, post_repair=True, solutions_dir=ROOT / "solutions")
+    assert r["final_message"] == "[stopped: model request timed out]" and r["request_timeouts"] == 1 and not r["provider_error"]

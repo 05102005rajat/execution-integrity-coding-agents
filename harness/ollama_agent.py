@@ -6,6 +6,7 @@ The model must support tool calling (llama3.2, qwen2.5-coder, qwen3 do; gemma3:1
 """
 import json
 import os
+import socket
 import urllib.error
 import urllib.request
 
@@ -58,6 +59,7 @@ class OllamaAgent:
         self.usage = {"input_tokens": 0, "output_tokens": 0}
         self.text_tool_calls = 0
         self.malformed_calls = 0
+        self.request_timeouts = 0
 
     def run(self, prompt, tool):
         messages = [{"role": "system", "content": SYSTEM}, {"role": "user", "content": prompt}]
@@ -84,6 +86,16 @@ class OllamaAgent:
                 messages.append({"role": "user", "content": "Your last tool call could not be parsed. Call the bash tool "
                                                              "again with a valid command."})
                 continue
+            except (socket.timeout, TimeoutError) as e:
+                # The model did not answer within the request timeout (a stuck or runaway generation). Record it and end the
+                # episode as unresolved instead of crashing the whole job.
+                self.request_timeouts += 1
+                return "[stopped: model request timed out]"
+            except urllib.error.URLError as e:
+                if isinstance(getattr(e, "reason", None), (socket.timeout, TimeoutError)):
+                    self.request_timeouts += 1
+                    return "[stopped: model request timed out]"
+                raise
             self.usage["input_tokens"] += resp.get("prompt_eval_count", 0)
             self.usage["output_tokens"] += resp.get("eval_count", 0)
             msg = resp["message"]

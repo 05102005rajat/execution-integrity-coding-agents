@@ -1,0 +1,13 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,9 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m:
++        return []
++    num_rows = len(m)
++    num_cols = len(m[0])
++    return [[m[i][j] for i in range(num_rows)] for j in range(num_cols)]
+ 
+ 
+ def identity(n):
