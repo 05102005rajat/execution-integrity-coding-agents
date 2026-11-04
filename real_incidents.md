@@ -18,3 +18,12 @@ No study that measures how often a coding agent edits correct code because a rep
 ## Caveats
 - Several sources are forum posts, issue trackers and a blog, not peer-reviewed. The two arXiv entries I have not read beyond the summaries.
 - A secondary point worth keeping: deleting `__pycache__` does not help if a long-running process still holds the old module. Our experiment does not cover that.
+
+## Added 2026-10-31: agents editing code that did not need editing
+Found after the experiments. Read from search summaries, not the full papers; check before citing numbers.
+- FIXEDBENCH, arXiv 2605.07769 ([blog](https://eth-sri.github.io/blog/fixedcode)): tasks where the issue is already fixed; reported that most agents still make changes. Closest to our setup. It does not use a reproducible environment fault.
+- [When Models Edit Too Much](https://arxiv.org/pdf/2609.04061), arXiv 2609.04061: over-editing beyond a minimal fix, measured on injected bugs.
+- [CanItEdit](https://arxiv.org/html/2312.12450v6), arXiv 2312.12450: ExcessCode metric for unnecessary code in a correct edit.
+- [CodeSlop](https://www.alphaxiv.org/abs/2607.18161), arXiv 2607.18161: speculative edits left in agent patches.
+- [EDIT-Bench audit](https://www.emergentmind.com/papers/2604.05100), arXiv 2604.05100: test suites often do not check edits outside the requested region.
+- Correction to the "What I did not find" section: that section's claim of no closely related work needs this caveat. FIXEDBENCH is close. Still not found: a study where the failure comes from a repeating environment fault.
