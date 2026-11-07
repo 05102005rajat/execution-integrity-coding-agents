@@ -6,7 +6,7 @@ Independent research project (UCI IN4MATX 199) by Rajat Choudhary, mentored by E
 
 **Start with [HANDOFF.md](HANDOFF.md)**: full context, results so far, what is running, what to do next, and the rules to follow. Exact hypotheses, falsifiers and result tables are in [hypothesis_sheet.md](hypothesis_sheet.md), written before each run.
 
-Status (2026-10-30): harness and tests done (90 pass); valid results for Qwen3.5 2B, 4B and 27B on a real-bug control and two real environment faults. Next step is the write-up for the mentor.
+Status (2026-11-06): harness and tests done (90 pass); valid results for Qwen3.5 2B, 4B and 27B on a real-bug control and two real environment faults; results summary sent to the mentor Nov 1; meeting Nov 7. **For the current full picture read [STATUS_2026-11-06.md](STATUS_2026-11-06.md)** (every result cell, hypotheses, fixed mistakes, open questions).
 
 ## Layout
 | path | what |
