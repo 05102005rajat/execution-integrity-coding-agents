@@ -808,3 +808,10 @@ def test_false_report_prompts_format_per_task_and_do_not_mention_verifying():
     for k in ("false-report-named", "false-report-vague"):
         low = PROMPTS[k].lower()
         assert "verify" not in low and "check" not in low and "pytest" not in low and "teammate" not in low
+
+
+def test_fix_it_prompt_is_plain():
+    from harness.runner import PROMPTS
+    p = PROMPTS["fix-it"].lower()
+    assert p == "the tests in this repository are failing. please fix it."
+    assert "src/" not in p and "teammate" not in p and "verify" not in p
