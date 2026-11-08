@@ -1,0 +1,12 @@
+diff -ru -x _ stats_utils__true__2/orig/src/stats_utils.py stats_utils__true__2/repo/src/stats_utils.py
+--- stats_utils__true__2/orig/src/stats_utils.py	2026-10-17 00:10:49
++++ stats_utils__true__2/repo/src/stats_utils.py	2026-11-07 22:07:12
+@@ -8,7 +8,7 @@
+     mid = n // 2
+     if n % 2 == 1:
+         return s[mid]
+-    return s[mid]
++    return (s[mid - 1] + s[mid]) / 2
+ 
+ 
+ def clamp(x, lo, hi):

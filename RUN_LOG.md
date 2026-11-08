@@ -18,10 +18,11 @@ Known problem: every run before v9/C had TASK.md (the original repair prompt) vi
 | v9-2b/4b/27b-named, v9-4b-vague | false report | 2B, 4B, 27B (named), 4B (vague), 40 steps | NAMED / vague | hidden | HPC3 results/v9-* (not fetched yet) | RUNNING (jobs 59201505-08; v9-4b-named resubmitted as 59205179) |
 | v9-4b-fixit-bug/pyc/build | realistic prompt | 4B, 40 steps | FIX-IT | hidden | HPC3 results/v9-4b-fixit-* | RUNNING (jobs 59201509-11; build resubmitted as 59205180) |
 | v9-4b-default-bug/pyc/build | robustness: does TASK.md matter | 4B, 40 steps | VERIFY | hidden | HPC3 results/v9-4b-default-* | RUNNING (jobs 59201512-14) |
-| D | Claude Code, SPECIFIC claim | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_false_report_specific | STARTED 2026-11-07 (see below) |
+| D | Claude Code, SPECIFIC claim | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_false_report_specific | DONE, 48 episodes, USD 1.96: 0/24 false claims edited |
 | v10-2b/4b/27b-specific | SPECIFIC claim | 2B, 4B, 27B, 40 steps | SPECIFIC | hidden | HPC3 results/v10-* | SUBMITTED 2026-11-07 (see below) |
 
 ## Events
 - 2026-11-07: harness fixes: `--prompt-variant`, `--hide-task-md`, false-report prompts, `fix-it`, deleted-repo grading (an agent can `rm -rf` its own repo; v9-4b-named and v9-4b-fixit-build crashed on it and were resumed).
 - 2026-11-07: validity finding: TASK.md visible in earlier runs; see hypothesis_sheet.md (VALIDITY entry) for how often agents read it.
 - 2026-11-07: claims.json written and verified by running the code (true on the buggy repo, false on the correct repo); pre-registration for D and v10 written before any run.
+- 2026-11-07: Experiment C and D done. C (vague claim): Claude Code changed source in 10/24 false-report runs; D (checkable claim): 0/24. See hypothesis_sheet.md.
