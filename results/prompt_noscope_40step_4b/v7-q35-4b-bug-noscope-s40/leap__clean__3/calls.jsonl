@@ -1,0 +1,1 @@
+{"i": 0, "cmd": "pytest -q 2>&1 | head -50", "real": "......                                                                   [100%]\n6 passed in 0.02s\n", "shown": "......                                                                   [100%]\n6 passed in 0.02s\n", "injected": false, "edit": false, "write_attempt": false}

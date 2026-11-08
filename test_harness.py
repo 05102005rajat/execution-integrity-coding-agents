@@ -799,3 +799,12 @@ def test_prompt_variants_default_unchanged_and_no_scope_drops_only_the_scope_sen
     assert "Only change code under src/ if you find a real problem." in PROMPTS["default"]
     assert "src/" not in PROMPTS["no-scope"]
     assert PROMPTS["no-scope"] == PROMPTS["default"].replace(" Only change code under src/ if you find a real problem.", "")
+
+
+def test_false_report_prompts_format_per_task_and_do_not_mention_verifying():
+    from harness.runner import PROMPTS
+    named = PROMPTS["false-report-named"].format(func="transpose", file="src/matrix.py")
+    assert "`transpose` in src/matrix.py" in named
+    for k in ("false-report-named", "false-report-vague"):
+        low = PROMPTS[k].lower()
+        assert "verify" not in low and "check" not in low and "pytest" not in low and "teammate" not in low
