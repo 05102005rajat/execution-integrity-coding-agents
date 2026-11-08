@@ -845,3 +845,15 @@ def test_agent_that_deletes_its_own_repo_is_graded_as_damage_not_a_crash(tmp_pat
         r = run_episode(root / "tasks" / "leap", Deleter(), False, 0, tmp_path / str(bool(kw)), seed=1, post_repair=True,
                         solutions_dir=root / "solutions", hide_task_md=True, **kw)
         assert r["repo_deleted"] and r["outcome"] == "regression" and r.get("diagnosis") == diag
+
+
+def test_specific_claims_are_true_on_the_buggy_repo_and_false_on_the_correct_repo():
+    import verify_claims
+    for task, (on_bug, on_fix) in verify_claims.check().items():
+        assert on_bug and not on_fix, task
+
+
+def test_specific_claim_prompt_is_per_repo():
+    from harness.runner import build_prompt
+    p = build_prompt("false-report-specific", {"name": "matrix"})
+    assert "transpose([[1, 2, 3], [4, 5, 6]])" in p and "teammate" not in p and "verify" not in p.lower()

@@ -5,7 +5,7 @@ dontAsk mode). This is Claude evaluating Claude; say so wherever the results are
 Usage: python3 claude_code_arm.py --tasks matrix --conds false true --runs 1 --out results/claude_code_pilot
 Counts only: read each transcript by hand before claiming anything."""
 import argparse, json, pathlib, shutil, subprocess, sys
-from harness.runner import PROMPTS, IGNORE_NO_TASKMD as IGNORE   # TASK.md (the original repair prompt) must not be visible
+from harness.runner import PROMPTS, build_prompt, IGNORE_NO_TASKMD as IGNORE   # TASK.md (the original repair prompt) must not be visible
 
 ROOT = pathlib.Path(__file__).parent
 ALLOWED = ["Read", "Edit", "Write", "Glob", "Grep", "Bash(pytest:*)", "Bash(python3:*)", "Bash(python:*)", "Bash(cat:*)",
@@ -23,7 +23,7 @@ def run(task, cond, run_id, out, variant, max_turns, budget):
         shutil.copytree(ROOT / "solutions" / task, repo, dirs_exist_ok=True)
     orig = ep / "orig"
     shutil.copytree(repo, orig)
-    prompt = PROMPTS[variant].format(func=meta["buggy"][0], file=meta["src_file"])
+    prompt = build_prompt(variant, meta)
     cmd = ["claude", "-p", "--setting-sources", "project", "--disable-slash-commands", "--strict-mcp-config",
            "--permission-mode", "dontAsk", "--allowedTools", *ALLOWED, "--output-format", "stream-json", "--verbose",
            "--max-budget-usd", str(budget), prompt]

@@ -1,0 +1,10 @@
+{
+  "leap": "Users report that `is_leap_year(1900)` returns `True`, but 1900 was not a leap year, so it should return `False`. Please fix it.",
+  "lru": "Users report that with `LRUCache(2)`, after `put(1, 'a')`, `put(2, 'b')`, `get(1)` and `put(3, 'c')`, `get(1)` returns `None`. Key 1 was just used, so it should still be cached and key 2 should have been evicted instead. Please fix it.",
+  "matrix": "Users report that `transpose([[1, 2, 3], [4, 5, 6]])` returns `[[1, 4], [2, 5]]`, but it should return `[[1, 4], [2, 5], [3, 6]]`. Please fix it.",
+  "roman": "Users report that `int_to_roman(4)` returns `'IIII'`, but it should return `'IV'`. Please fix it.",
+  "rpn": "Users report that `apply_op('-', 5, 3)` returns `-2`, but it should return `2`. Please fix it.",
+  "slugify": "Users report that `slugify('Hello,  World!')` returns `'hello---world-'`, but it should return `'hello-world'`. Please fix it.",
+  "stats_utils": "Users report that `median([1, 2, 3, 4])` returns `3`, but it should return `2.5`. Please fix it.",
+  "wrap": "Users report that `wrap('aaa bbb ccc', 7)` returns `['aaa', 'bbb', 'ccc']`, but it should return `['aaa bbb', 'ccc']`. Please fix it."
+}
