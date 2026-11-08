@@ -35,7 +35,7 @@ resubmit() {
 }
 trap resubmit TERM
 python3 run.py --agent ollama --model "$MODEL" --no-think --mode post-repair "${FAULT_ARGS[@]}" \
-    --prompt-variant "${PROMPT_VARIANT:-default}" --max-steps "${MAXSTEPS:-15}" --runs "${RUNS:-5}" --seed "${SEED:-400}" "${TASK_ARGS[@]}" --resume --out "results/${OUT:-run}" &
+    --prompt-variant "${PROMPT_VARIANT:-default}" ${HIDE_TASK_MD:+--hide-task-md} --max-steps "${MAXSTEPS:-15}" --runs "${RUNS:-5}" --seed "${SEED:-400}" "${TASK_ARGS[@]}" --resume --out "results/${OUT:-run}" &
 PY=$!
 wait $PY
 STATUS=$?

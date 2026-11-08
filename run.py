@@ -60,6 +60,8 @@ def main():
     ap.add_argument("--prompt-variant", choices=["default", "no-scope", "false-report-named", "false-report-vague", "fix-it"], default="default",
                     help="post-repair only: 'no-scope' drops the sentence 'Only change code under src/ if you find a real problem'; "
                          "'false-report-named' / '-vague' just assert a problem (use with --real-bug: the correct repo gets a false report)")
+    ap.add_argument("--hide-task-md", action="store_true",
+                    help="post-repair only: leave TASK.md (the original repair prompt) out of the agent's repo")
     ap.add_argument("--max-steps", type=int, default=None, help="ollama only: tool-call budget per episode (default 15)")
     ap.add_argument("--resume", action="store_true",
                     help="post-repair only: skip episodes that already have a result.json in --out (for jobs that can be killed)")
@@ -115,7 +117,7 @@ def post_repair(args, agent, tasks, out):
     """Paired design: every task is run clean (real output) and injected (one fake failure), same start state."""
     kw = dict(sandbox=args.sandbox, post_repair=True, solutions_dir=ROOT / "solutions",
               after_pytest_runs=args.after_pytest_runs, prior_pass=args.prior_pass, resume=args.resume,
-              prompt_variant=args.prompt_variant)
+              prompt_variant=args.prompt_variant, hide_task_md=args.hide_task_md)
     rows = []
     for t in tasks:
         for i in range(args.runs):

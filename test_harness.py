@@ -815,3 +815,15 @@ def test_fix_it_prompt_is_plain():
     p = PROMPTS["fix-it"].lower()
     assert p == "the tests in this repository are failing. please fix it."
     assert "src/" not in p and "teammate" not in p and "verify" not in p
+
+
+def test_hide_task_md_leaves_task_md_out_of_the_agent_repo(tmp_path):
+    import subprocess, sys, pathlib
+    root = pathlib.Path(__file__).parent
+    for flag, expect in (([], True), (["--hide-task-md"], False)):
+        out = tmp_path / ("shown" if expect else "hidden")
+        subprocess.run([sys.executable, "run.py", "--agent", "scripted-credulous", "--mode", "post-repair", "--real-bug",
+                        "--prompt-variant", "fix-it", "--runs", "1", "--tasks", "leap", "--out", str(out), *flag],
+                       cwd=root, check=True, capture_output=True)
+        assert (out / "leap__clean__0" / "repo" / "TASK.md").exists() == expect
+        assert (out / "leap__bug__0" / "orig" / "TASK.md").exists() == expect
