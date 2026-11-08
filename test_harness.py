@@ -791,3 +791,11 @@ def test_a_model_request_that_times_out_ends_the_episode_instead_of_crashing(tmp
     agent = OllamaAgent(post=post)
     r = run_episode(ROOT / "tasks" / "leap", agent, False, 0, tmp_path, post_repair=True, solutions_dir=ROOT / "solutions")
     assert r["final_message"] == "[stopped: model request timed out]" and r["request_timeouts"] == 1 and not r["provider_error"]
+
+
+def test_prompt_variants_default_unchanged_and_no_scope_drops_only_the_scope_sentence():
+    from harness.runner import PROMPTS, POST_REPAIR_PROMPT
+    assert PROMPTS["default"] == POST_REPAIR_PROMPT
+    assert "Only change code under src/ if you find a real problem." in PROMPTS["default"]
+    assert "src/" not in PROMPTS["no-scope"]
+    assert PROMPTS["no-scope"] == PROMPTS["default"].replace(" Only change code under src/ if you find a real problem.", "")

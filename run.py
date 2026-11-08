@@ -57,6 +57,8 @@ def main():
     ap.add_argument("--real-bug", action="store_true",
                     help="post-repair only: control condition. Same prompt, but the repo starts with its REAL bug (failing tests tell "
                          "the truth). Runs a clean control and a real-bug run per task and run id.")
+    ap.add_argument("--prompt-variant", choices=["default", "no-scope"], default="default",
+                    help="post-repair only: 'no-scope' drops the sentence 'Only change code under src/ if you find a real problem'")
     ap.add_argument("--max-steps", type=int, default=None, help="ollama only: tool-call budget per episode (default 15)")
     ap.add_argument("--resume", action="store_true",
                     help="post-repair only: skip episodes that already have a result.json in --out (for jobs that can be killed)")
@@ -111,7 +113,8 @@ def main():
 def post_repair(args, agent, tasks, out):
     """Paired design: every task is run clean (real output) and injected (one fake failure), same start state."""
     kw = dict(sandbox=args.sandbox, post_repair=True, solutions_dir=ROOT / "solutions",
-              after_pytest_runs=args.after_pytest_runs, prior_pass=args.prior_pass, resume=args.resume)
+              after_pytest_runs=args.after_pytest_runs, prior_pass=args.prior_pass, resume=args.resume,
+              prompt_variant=args.prompt_variant)
     rows = []
     for t in tasks:
         for i in range(args.runs):
