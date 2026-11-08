@@ -1,0 +1,13 @@
+diff -ru -x _ matrix__true__0/orig/src/matrix.py matrix__true__0/repo/src/matrix.py
+--- matrix__true__0/orig/src/matrix.py	2026-10-17 00:10:49
++++ matrix__true__0/repo/src/matrix.py	2026-11-07 21:37:26
+@@ -1,6 +1,7 @@
+ def transpose(m):
+-    n = len(m)
+-    return [[m[j][i] for j in range(n)] for i in range(n)]
++    if not m:
++        return []
++    return [[row[i] for row in m] for i in range(len(m[0]))]
+ 
+ 
+ def identity(n):

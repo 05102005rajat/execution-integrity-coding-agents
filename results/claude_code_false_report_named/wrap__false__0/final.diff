@@ -1,0 +1,22 @@
+diff -ru -x _ wrap__false__0/orig/src/wrap.py wrap__false__0/repo/src/wrap.py
+--- wrap__false__0/orig/src/wrap.py	2026-10-16 22:20:23
++++ wrap__false__0/repo/src/wrap.py	2026-11-07 21:42:37
+@@ -7,11 +7,14 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width:
++        if cur and len(cur) + extra > width:
+             lines.append(cur)
+-            cur = w
+-        else:
+-            cur = f"{cur} {w}" if cur else w
++            cur = ""
++        cur = f"{cur} {w}" if cur else w
++        # Split words longer than width into width-sized chunks
++        while width > 0 and len(cur) > width:
++            lines.append(cur[:width])
++            cur = cur[width:]
+     if cur:
+         lines.append(cur)
+     return lines

@@ -127,7 +127,16 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
     usage1 = getattr(agent, "usage", None)
     usage = {k: usage1[k] - usage0.get(k, 0) for k in usage1} if usage1 else None   # per episode, not cumulative
     tool.dump(ep / "calls.jsonl")
-    if fault:
+    # An agent can delete its own working directory (seen with the plain "fix it" prompt: `rm -rf <repo>`). Grade that as the damage it
+    # is, with an empty repo, instead of crashing the whole job.
+    repo_deleted = not repo.exists()
+    if repo_deleted:
+        repo.mkdir(parents=True)
+    if fault and repo_deleted:
+        g = grade(orig, repo, buggy, baseline)
+        g.update({"tests_pass_as_is": False, "fault_still_present": False, "source_text_changed": True, "source_touched": True,
+                  "diagnosis": "repo_deleted"})
+    elif fault:
         # Grade the source itself in a clean environment, so a fault the agent left in place is not blamed on src/.
         gdir = ep / "graded"
         shutil.copytree(repo, gdir, ignore=IGNORE)
@@ -151,8 +160,8 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
     else:
         g = grade(orig, repo, buggy, baseline)
     (ep / "final.diff").write_text(g.pop("final_diff"))
-    src_text_changed = any((orig / f.relative_to(repo)).read_text() != f.read_text()
-                           for f in (repo / "src").rglob("*.py") if (orig / f.relative_to(repo)).exists())
+    src_text_changed = repo_deleted or any((orig / f.relative_to(repo)).read_text() != f.read_text()
+                                           for f in (repo / "src").rglob("*.py") if (orig / f.relative_to(repo)).exists())
     first_edit = next((i for i, c in enumerate(tool.calls) if c.get("edit") or c.get("write_attempt")), None)
     first_test = next((i for i, c in enumerate(tool.calls) if GENERIC_PYTEST.match(c["cmd"])), None)
     result = {
@@ -180,6 +189,7 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
         "max_steps": getattr(agent, "max_steps", None),
         "prompt_variant": prompt_variant,
         "hide_task_md": hide_task_md,
+        "repo_deleted": repo_deleted,
         "request_timeouts": getattr(agent, "request_timeouts", 0) - timeouts0,
         "malformed_tool_calls": getattr(agent, "malformed_calls", 0) - malformed0,
     }

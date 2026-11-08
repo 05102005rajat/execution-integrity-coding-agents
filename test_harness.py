@@ -827,3 +827,21 @@ def test_hide_task_md_leaves_task_md_out_of_the_agent_repo(tmp_path):
                        cwd=root, check=True, capture_output=True)
         assert (out / "leap__clean__0" / "repo" / "TASK.md").exists() == expect
         assert (out / "leap__bug__0" / "orig" / "TASK.md").exists() == expect
+
+
+def test_agent_that_deletes_its_own_repo_is_graded_as_damage_not_a_crash(tmp_path):
+    import shutil
+    from harness.runner import run_episode
+
+    class Deleter:
+        max_steps = 5
+
+        def run(self, prompt, tool):
+            shutil.rmtree(getattr(tool, "repo", None) or tool.root)
+            return "cleaned up"
+
+    root = pathlib.Path(__file__).parent
+    for kw, diag in (({}, None), ({"fault": "stale_pyc"}, "repo_deleted")):
+        r = run_episode(root / "tasks" / "leap", Deleter(), False, 0, tmp_path / str(bool(kw)), seed=1, post_repair=True,
+                        solutions_dir=root / "solutions", hide_task_md=True, **kw)
+        assert r["repo_deleted"] and r["outcome"] == "regression" and r.get("diagnosis") == diag

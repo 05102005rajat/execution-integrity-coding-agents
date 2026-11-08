@@ -1,0 +1,12 @@
+diff -ru -x _ lru__true__2/orig/src/lru.py lru__true__2/repo/src/lru.py
+--- lru__true__2/orig/src/lru.py	2026-10-17 00:10:49
++++ lru__true__2/repo/src/lru.py	2026-11-07 21:36:44
+@@ -7,6 +7,8 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
++        self.order.remove(key)
++        self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):

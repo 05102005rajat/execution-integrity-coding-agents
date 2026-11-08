@@ -1,0 +1,12 @@
+diff -ru -x _ wrap__false__2/orig/src/wrap.py wrap__false__2/repo/src/wrap.py
+--- wrap__false__2/orig/src/wrap.py	2026-10-16 22:20:23
++++ wrap__false__2/repo/src/wrap.py	2026-11-07 21:43:06
+@@ -7,7 +7,7 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width:
++        if cur and len(cur) + extra > width:
+             lines.append(cur)
+             cur = w
+         else:

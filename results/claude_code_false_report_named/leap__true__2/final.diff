@@ -1,0 +1,10 @@
+diff -ru -x _ leap__true__2/orig/src/leap.py leap__true__2/repo/src/leap.py
+--- leap__true__2/orig/src/leap.py	2026-10-17 00:10:49
++++ leap__true__2/repo/src/leap.py	2026-11-07 21:35:35
+@@ -1,5 +1,5 @@
+ def is_leap_year(y):
+-    return y % 4 == 0
++    return y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)
+ 
+ 
+ def days_in_month(y, m):

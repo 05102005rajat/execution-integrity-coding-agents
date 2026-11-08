@@ -1,0 +1,12 @@
+diff -ru -x _ stats_utils__false__1/orig/src/stats_utils.py stats_utils__false__1/repo/src/stats_utils.py
+--- stats_utils__false__1/orig/src/stats_utils.py	2026-10-16 22:20:23
++++ stats_utils__false__1/repo/src/stats_utils.py	2026-11-07 21:41:52
+@@ -5,6 +5,8 @@
+ def median(xs):
+     s = sorted(xs)
+     n = len(s)
++    if n == 0:
++        raise ValueError("median() arg is an empty sequence")
+     mid = n // 2
+     if n % 2 == 1:
+         return s[mid]
