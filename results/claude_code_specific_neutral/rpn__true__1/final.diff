@@ -1,0 +1,12 @@
+diff -ru -x _ cc_specific2/rpn__true__1/orig/src/rpn.py cc_specific2/rpn__true__1/repo/src/rpn.py
+--- cc_specific2/rpn__true__1/orig/src/rpn.py	2026-10-17 00:10:49
++++ cc_specific2/rpn__true__1/repo/src/rpn.py	2026-11-08 16:45:14
+@@ -2,7 +2,7 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return b - a
++        return a - b
+     if op == "*":
+         return a * b
+     if op == "/":

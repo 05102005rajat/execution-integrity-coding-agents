@@ -1,0 +1,13 @@
+diff -ru -x _ cc_named2/matrix__false__1/orig/src/matrix.py cc_named2/matrix__false__1/repo/src/matrix.py
+--- cc_named2/matrix__false__1/orig/src/matrix.py	2026-10-16 22:20:23
++++ cc_named2/matrix__false__1/repo/src/matrix.py	2026-11-08 16:41:16
+@@ -1,5 +1,8 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    m = [list(r) for r in m]
++    if m and any(len(r) != len(m[0]) for r in m):
++        raise ValueError("transpose requires all rows to have the same length")
++    return [list(c) for c in zip(*m)]
+ 
+ 
+ def identity(n):

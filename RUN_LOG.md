@@ -18,8 +18,8 @@ Known problems: (1) every run before v9/C had TASK.md (the original repair promp
 | v9-2b/4b/27b-named, v9-4b-vague | false report | 2B, 4B, 27B (named), 4B (vague), 40 steps | NAMED / vague | hidden | HPC3 results/v9-* (not fetched yet) | RUNNING (jobs 59201505-08; v9-4b-named resubmitted as 59205179) |
 | v9-4b-fixit-bug/pyc/build | realistic prompt | 4B, 40 steps | FIX-IT | hidden | HPC3 results/v9-4b-fixit-* | RUNNING (jobs 59201509-11; build resubmitted as 59205180) |
 | v9-4b-default-bug/pyc/build | robustness: does TASK.md matter | 4B, 40 steps | VERIFY | hidden | HPC3 results/v9-4b-default-* | RUNNING (jobs 59201512-14) |
-| C2 | Claude Code, NAMED claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | NAMED | hidden | (to be saved as results/claude_code_named_neutral) | RUNNING 2026-11-08 |
-| D2 | Claude Code, SPECIFIC claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | (to be saved as results/claude_code_specific_neutral) | RUNNING 2026-11-08 |
+| C2 | Claude Code, NAMED claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | NAMED | hidden | results/claude_code_named_neutral | DONE 2026-11-08, USD 1.81: 10/24 false-claim edits, same as C |
+| D2 | Claude Code, SPECIFIC claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_specific_neutral | DONE 2026-11-08, USD 1.98: 0/24 false-claim edits, same as D |
 | D | Claude Code, SPECIFIC claim | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_false_report_specific | DONE, 48 episodes, USD 1.96: 0/24 false claims edited |
 | v10-2b/4b/27b-specific | SPECIFIC claim | 2B, 4B, 27B, 40 steps | SPECIFIC | hidden | HPC3 results/v10-* | SUBMITTED 2026-11-07 (see below) |
 
@@ -29,3 +29,4 @@ Known problems: (1) every run before v9/C had TASK.md (the original repair promp
 - 2026-11-07: claims.json written and verified by running the code (true on the buggy repo, false on the correct repo); pre-registration for D and v10 written before any run.
 - 2026-11-07: Experiment C and D done. C (vague claim): Claude Code changed source in 10/24 false-report runs; D (checkable claim): 0/24. See hypothesis_sheet.md.
 - 2026-11-08: validity problem #2 (condition name in the agent's path) found on a recheck; fix + test committed; C and D rerun as C2 (named) and D2 (specific) with NEUTRAL paths; Qwen v9/v10 jobs still running with the old harness, to be rerun as v11 (pending decision).
+- 2026-11-08: C2 and D2 (neutral path) match C and D exactly in the headline counts, so the path leak did not change the Claude Code results.
