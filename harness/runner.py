@@ -1,4 +1,5 @@
 """Runs one episode: copy the task, let the agent work through the shell tool, grade with real tests."""
+import hashlib
 import json
 import pathlib
 import re
@@ -91,7 +92,13 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
     if ep.exists():
         shutil.rmtree(ep)
     ep.mkdir(parents=True)
-    repo, orig = ep / "repo", ep / "orig"
+    # The agent works in a NEUTRAL path (no condition, fault or experiment name in it): it can print its cwd, and earlier runs showed
+    # "__fault__" / "__bug__" / "-pyc-" / "-build-" back to the agent in many episodes. The repo is moved to ep/repo when the episode ends.
+    work = pathlib.Path(out_root).resolve().parent / ".work" / hashlib.sha1(f"{ep}".encode()).hexdigest()[:10]
+    if work.exists():
+        shutil.rmtree(work)
+    work.mkdir(parents=True)
+    repo, orig = work / "repo", ep / "orig"
     ign = IGNORE_NO_TASKMD if hide_task_md else IGNORE
     shutil.copytree(task_dir, repo, ignore=ign)
     shutil.copytree(task_dir, orig, ignore=ign)
@@ -202,5 +209,7 @@ def run_episode(task_dir, agent, inject, run_id, out_root, seed=0, sandbox=False
         "request_timeouts": getattr(agent, "request_timeouts", 0) - timeouts0,
         "malformed_tool_calls": getattr(agent, "malformed_calls", 0) - malformed0,
     }
+    shutil.move(str(repo), str(ep / "repo"))
+    shutil.rmtree(work, ignore_errors=True)
     (ep / "result.json").write_text(json.dumps(result, indent=2))
     return result

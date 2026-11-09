@@ -857,3 +857,25 @@ def test_specific_claim_prompt_is_per_repo():
     from harness.runner import build_prompt
     p = build_prompt("false-report-specific", {"name": "matrix"})
     assert "transpose([[1, 2, 3], [4, 5, 6]])" in p and "teammate" not in p and "verify" not in p.lower()
+
+
+def test_agent_never_sees_the_condition_or_experiment_name_in_its_path(tmp_path):
+    from harness.runner import run_episode
+
+    class Pwd:
+        max_steps = 3
+        seen = []
+
+        def run(self, prompt, tool):
+            Pwd.seen.append(tool.run("pwd") + tool.run("cd .. && pwd"))
+            return "ok"
+
+    root = pathlib.Path(__file__).parent
+    out = tmp_path / "v9-4b-pyc-secretname"
+    for kw in ({}, {"fault": "stale_build"}):
+        run_episode(root / "tasks" / "leap", Pwd(), False, 0, out, seed=1, post_repair=True, solutions_dir=root / "solutions",
+                    hide_task_md=True, **kw)
+    for seen in Pwd.seen:
+        for bad in ("fault", "bug", "clean", "pyc", "build", "secretname", "leap__"):
+            assert bad not in seen.replace(str(tmp_path.parent), ""), (bad, seen)
+    assert (out / "leap__fault__0" / "repo").exists()
