@@ -46,3 +46,6 @@ HPC3 queue was empty (the earlier scancel was blocked, the jobs had simply finis
 
 Robustness (TASK.md hidden, 4B, 40 steps): default prompt pyc 38/40 and build 39/40 clean, damage 2 and 1; fix-it prompt bug 40/40 fixed, pyc cause removed 35/40, build 33/40 (damage 3 and 3). v9-4b-default-bug is waiting on the resumed job.
 Reading: for the 27B model a named false claim gets an edit in more than half the episodes (21/40) while a specific checkable claim gets 1/40, the same direction as Claude Code (10/24 vs 0/24). Caveat: leaky path, so v11 neutral reruns are still the plan.
+
+## 2026-11-09: v11 submitted (Qwen reruns on the NEUTRAL harness, TASK.md hidden, 40 steps, seed 600)
+Code synced to HPC3 first (neutral working path and --hide-task-md verified present). Jobs 59404721-33: v11-4b-default-bug/pyc/build, v11-4b-fixit-bug/pyc/build, v11-2b-named, v11-4b-named, v11-4b-vague, v11-2b-specific, v11-4b-specific, v11-27b-named, v11-27b-specific (27B on A30, 48G). Results go to results/v11-* once fetched. Compare each cell with its v9/v10 leaky twin; report every cell, including any that change.
