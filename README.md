@@ -6,7 +6,7 @@ Independent research project (UCI IN4MATX 199) by Rajat Choudhary, mentored by E
 
 **Start with [HANDOFF.md](HANDOFF.md)**: full context, results so far, what is running, what to do next, and the rules to follow. Exact hypotheses, falsifiers and result tables are in [hypothesis_sheet.md](hypothesis_sheet.md), written before each run.
 
-Status (2026-11-06): harness and tests done (90 pass); valid results for Qwen3.5 2B, 4B and 27B on a real-bug control and two real environment faults; results summary sent to the mentor Nov 1; meeting Nov 7. **For the current full picture read [STATUS_2026-11-06.md](STATUS_2026-11-06.md)** (every result cell, hypotheses, fixed mistakes, open questions).
+Status (2026-11-06): harness and tests done (98 pass (was 90 on 2026-11-06)); valid results for Qwen3.5 2B, 4B and 27B on a real-bug control and two real environment faults; results summary sent to the mentor Nov 1; meeting Nov 7. **For the current full picture read [STATUS_2026-11-06.md](STATUS_2026-11-06.md)** (every result cell, hypotheses, fixed mistakes, open questions).
 
 ## Layout
 | path | what |
@@ -15,7 +15,7 @@ Status (2026-11-06): harness and tests done (90 pass); valid results for Qwen3.5
 | `tasks/`, `solutions/` | 8 tiny Python repos, each with one planted bug and its reference fix |
 | `run.py` | command line entry point (conditions: clean, fake failure, real fault, real bug) |
 | `analyze.py` | scores a bug / stale_pyc / stale_build triple of result folders with the pre-registered rules |
-| `test_harness.py` | 90 tests of the harness itself |
+| `test_harness.py` | 98 tests of the harness itself (was 90 on 2026-11-06) |
 | `hpc3/` | scripts for the UCI HPC3 free GPU queue (setup, model pull, job script) |
 | `colab/` | notebooks used before HPC3 access (obsolete, kept for reference) |
 | `results/` | per-episode logs and labels for every run, grouped by experiment (see HANDOFF.md section 5) |
@@ -25,7 +25,7 @@ Status (2026-11-06): harness and tests done (90 pass); valid results for Qwen3.5
 ## Quick start
 ```bash
 python3 -m pip install pytest
-python3 -m pytest -q                      # about 2 minutes, 90 tests
+python3 -m pytest -q                      # about 2 minutes, 98 tests
 python3 run.py --agent scripted-credulous --mode post-repair --fault stale_pyc --runs 1 --tasks leap roman --out /tmp/demo
 # real model through Ollama (no API key):
 python3 run.py --agent ollama --model qwen3.5:4b --no-think --mode post-repair --fault stale_pyc --runs 5 --max-steps 40 --out results/mine
