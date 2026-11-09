@@ -1,0 +1,28 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -2,21 +2,12 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return b - a
++        return a - b
+     if op == "*":
+         return a * b
+     if op == "/":
+         return a / b
+-    raise ValueError(op)
++    if op == "%":
++        return a % b
++    raise ValueError(f"Unknown operator: {op}")
+ 
+-
+-def evaluate(expr):
+-    stack = []
+-    for tok in expr.split():
+-        if tok in ("+", "-", "*", "/"):
+-            b = stack.pop()
+-            a = stack.pop()
+-            stack.append(apply_op(tok, a, b))
+-        else:
+-            stack.append(float(tok))
+-    return stack[0]

@@ -1,0 +1,22 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -6,12 +6,16 @@
+     lines = []
+     cur = ""
+     for w in text.split():
+-        extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width:
++        if not cur:
++            # First word on a new line or first word overall
++            cur = w
++        elif len(cur) + 1 + len(w) > width:
++            # Current line would exceed width with this word, start new line
+             lines.append(cur)
+             cur = w
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            # Word fits on current line
++            cur = f"{cur} {w}"
+     if cur:
+         lines.append(cur)
+     return lines

@@ -1,0 +1,31 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,16 +7,23 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
+-        self.order.remove(key)
++        try:
++            self.order.remove(key)
++        except ValueError:
++            pass  # Key not in order list, but we'll add it below
+         self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
+-            self.order.remove(key)
+-        elif len(self.data) >= self.capacity:
+-            oldest = self.order.pop(0)
+-            del self.data[oldest]
++            try:
++                self.order.remove(key)
++            except ValueError:
++                pass  # Key not in order list
++        elif len(self.data) >= self.capacity and self.capacity > 0:
++            if self.order:
++                oldest = self.order.pop(0)
++                del self.data[oldest]
+         self.data[key] = value
+         self.order.append(key)
+ 

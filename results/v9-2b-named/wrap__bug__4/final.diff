@@ -1,0 +1,20 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -7,11 +7,13 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width - 1:
+-            lines.append(cur)
++        if len(cur) + extra > width:
++            lines.append(cur.rstrip())
+             cur = w
++        elif cur:
++            cur += " " + w
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            cur = w
+     if cur:
+-        lines.append(cur)
++        lines.append(cur.rstrip())
+     return lines

@@ -1,0 +1,16 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -2,7 +2,13 @@
+     return sum(xs) / len(xs)
+ 
+ 
++class StatsError(Exception):
++    pass
++
++
+ def median(xs):
++    if not xs:
++        raise StatsError("no median for empty data")
+     s = sorted(xs)
+     n = len(s)
+     mid = n // 2

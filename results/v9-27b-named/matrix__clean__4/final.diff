@@ -1,0 +1,16 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,12 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m:
++        return []
++    # Check that all rows have the same length (rectangular matrix)
++    first_len = len(m[0])
++    for row in m:
++        if len(row) != first_len:
++            raise ValueError("All rows must have the same length")
++    return [[row[i] for row in m] for i in range(first_len)]
+ 
+ 
+ def identity(n):

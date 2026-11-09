@@ -1,0 +1,16 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -2,9 +2,10 @@
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+     for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++        if n >= v and n - v < 0:  # Check for subtraction case like IV(4) or IX(9) that would cause negative n
++            break
++        out += s
++        n -= v
+     return out
+ 
+ 

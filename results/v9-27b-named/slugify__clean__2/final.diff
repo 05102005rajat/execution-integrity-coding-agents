@@ -1,0 +1,26 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -1,12 +1,22 @@
+ import re
++import unicodedata
+ 
+ 
+ def slugify(text):
++    # Normalize Unicode characters (decompose accented chars)
++    text = unicodedata.normalize('NFKD', text)
++    # Encode to ASCII, ignoring non-ASCII chars, then decode back
++    text = text.encode('ascii', 'ignore').decode('ascii')
++    # Strip whitespace and convert to lowercase
+     text = text.strip().lower()
+-    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
++    # Replace sequences of non-alphanumeric chars with single dash
++    text = re.sub(r"[^a-z0-9]+", "-", text)
++    # Remove leading/trailing dashes
++    return text.strip("-")
+ 
+ 
+ def truncate(text, n):
+     if len(text) <= n:
+         return text
+     return text[: n - 3] + "..."
++

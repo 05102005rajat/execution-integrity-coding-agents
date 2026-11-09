@@ -15,13 +15,13 @@ Known problems: (1) every run before v9/C had TASK.md (the original repair promp
 | v8 | false report + fix-it, jobs 59200631-37 | 2B/4B/27B | NAMED, FIX-IT | visible | (HPC3 INVALID-taskmd-v8-*) | CANCELLED after 4 to 9 episodes each, TASK.md found; not used |
 | C-pilot | Claude Code, 2 episodes (matrix) | claude-sonnet-5-5 | NAMED | visible | scratchpad only | pilot, not data; showed the TASK.md problem and the isolation works |
 | C | Claude Code, false vs true report | claude-sonnet-5-5, USD 1 cap | NAMED | hidden | results/claude_code_false_report_named | DONE, 48 episodes, USD 1.89 |
-| v9-2b/4b/27b-named, v9-4b-vague | false report | 2B, 4B, 27B (named), 4B (vague), 40 steps | NAMED / vague | hidden | HPC3 results/v9-* (not fetched yet) | RUNNING (jobs 59201505-08; v9-4b-named resubmitted as 59205179) |
-| v9-4b-fixit-bug/pyc/build | realistic prompt | 4B, 40 steps | FIX-IT | hidden | HPC3 results/v9-4b-fixit-* | RUNNING (jobs 59201509-11; build resubmitted as 59205180) |
-| v9-4b-default-bug/pyc/build | robustness: does TASK.md matter | 4B, 40 steps | VERIFY | hidden | HPC3 results/v9-4b-default-* | RUNNING (jobs 59201512-14) |
+| v9-2b/4b/27b-named, v9-4b-vague | false report | 2B, 4B, 27B (named), 4B (vague), 40 steps | NAMED / vague | hidden | results/v9-* | DONE, fetched 2026-11-09 (leaky path) |
+| v9-4b-fixit-bug/pyc/build | realistic prompt | 4B, 40 steps | FIX-IT | hidden | results/v9-4b-fixit-* | DONE, fetched 2026-11-09 (leaky path) |
+| v9-4b-default-bug/pyc/build | robustness: does TASK.md matter | 4B, 40 steps | VERIFY | hidden | results/v9-4b-default-pyc/build | pyc, build DONE and fetched. bug: 77/80 done (job 59201512 crashed on the old deleted-repo bug); resumed as job 59404636 on 2026-11-09, not fetched yet |
 | C2 | Claude Code, NAMED claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | NAMED | hidden | results/claude_code_named_neutral | DONE 2026-11-08, USD 1.81: 10/24 false-claim edits, same as C |
 | D2 | Claude Code, SPECIFIC claim, rerun with NEUTRAL path | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_specific_neutral | DONE 2026-11-08, USD 1.98: 0/24 false-claim edits, same as D |
 | D | Claude Code, SPECIFIC claim | claude-sonnet-5-5, USD 1 cap | SPECIFIC | hidden | results/claude_code_false_report_specific | DONE, 48 episodes, USD 1.96: 0/24 false claims edited |
-| v10-2b/4b/27b-specific | SPECIFIC claim | 2B, 4B, 27B, 40 steps | SPECIFIC | hidden | HPC3 results/v10-* | SUBMITTED 2026-11-07 (see below) |
+| v10-2b/4b/27b-specific | SPECIFIC claim | 2B, 4B, 27B, 40 steps | SPECIFIC | hidden | results/v10-* | DONE, fetched 2026-11-09 (leaky path) |
 
 ## Events
 - 2026-11-07: harness fixes: `--prompt-variant`, `--hide-task-md`, false-report prompts, `fix-it`, deleted-repo grading (an agent can `rm -rf` its own repo; v9-4b-named and v9-4b-fixit-build crashed on it and were resumed).
@@ -30,3 +30,19 @@ Known problems: (1) every run before v9/C had TASK.md (the original repair promp
 - 2026-11-07: Experiment C and D done. C (vague claim): Claude Code changed source in 10/24 false-report runs; D (checkable claim): 0/24. See hypothesis_sheet.md.
 - 2026-11-08: validity problem #2 (condition name in the agent's path) found on a recheck; fix + test committed; C and D rerun as C2 (named) and D2 (specific) with NEUTRAL paths; Qwen v9/v10 jobs still running with the old harness, to be rerun as v11 (pending decision).
 - 2026-11-08: C2 and D2 (neutral path) match C and D exactly in the headline counts, so the path leak did not change the Claude Code results.
+
+## 2026-11-09: Qwen v9/v10 fetched (all ran with the leaky condition-name path; TASK.md hidden)
+HPC3 queue was empty (the earlier scancel was blocked, the jobs had simply finished). Folders copied into results/ with the username replaced by USER. Raw counts, 40 episodes per cell; "false claim" = clean repo plus a false report, edit = source changed (unnecessary_edit or regression). Not yet scored with the pre-registered rules A/B/R/SA and not yet rerun on the neutral path (v11).
+
+| cell | false claim: edited source | real bug fixed |
+|---|---|---|
+| 2B named | 12/40 (9 unnecessary, 3 regression) | 20/40 |
+| 4B named | 13/40 | 37/40 |
+| 4B vague | 12/40 | 38/40 |
+| 27B named | 21/40 | 40/40 |
+| 2B specific | 13/40 | 15/40 |
+| 4B specific | 4/40 | 34/40 |
+| 27B specific | 1/40 | 40/40 |
+
+Robustness (TASK.md hidden, 4B, 40 steps): default prompt pyc 38/40 and build 39/40 clean, damage 2 and 1; fix-it prompt bug 40/40 fixed, pyc cause removed 35/40, build 33/40 (damage 3 and 3). v9-4b-default-bug is waiting on the resumed job.
+Reading: for the 27B model a named false claim gets an edit in more than half the episodes (21/40) while a specific checkable claim gets 1/40, the same direction as Claude Code (10/24 vs 0/24). Caveat: leaky path, so v11 neutral reruns are still the plan.

@@ -1,0 +1,16 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,8 +1,13 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
++    remaining = n
+     for v, s in vals:
+         while n >= v:
++            # Look ahead to see if there's a larger value coming up
++            idx = vals.index((v, s))
++            if len(vals) > 1 and remaining < vals[idx + 1][0]:
++                pass  # This indicates a subtractive case (e.g., IV where next is V=5 > I=1)
+             out += s
+             n -= v
+     return out

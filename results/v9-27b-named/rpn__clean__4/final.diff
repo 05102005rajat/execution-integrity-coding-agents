@@ -1,0 +1,19 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -1,12 +1,12 @@
+ def apply_op(op, a, b):
+     if op == "+":
+-        return a + b
++        return float(a) + float(b)
+     if op == "-":
+-        return a - b
++        return float(a) - float(b)
+     if op == "*":
+-        return a * b
++        return float(a) * float(b)
+     if op == "/":
+-        return a / b
++        return float(a) / float(b)
+     raise ValueError(op)
+ 
+ 

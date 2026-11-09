@@ -1,0 +1,17 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,5 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    return [[list(r) for r in row] for row in zip(*m)]
+ 
+ 
+ def identity(n):
+@@ -7,4 +7,6 @@
+ 
+ 
+ def matmul(a, b):
+-    return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in a]
++    # Convert each row of b to a list (or tuple) so it can be unpacked by zip(*)
++    # This handles generators and other single-use iterables correctly
++    return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in [list(r) for r in a]]

@@ -1,0 +1,23 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -7,13 +7,19 @@
+         return a * b
+     if op == "/":
+         return a / b
++    if op == "//":
++        return a // b
++    if op == "**":
++        return a ** b
++    if op == "%":
++        return a % b
+     raise ValueError(op)
+ 
+ 
+ def evaluate(expr):
+     stack = []
+     for tok in expr.split():
+-        if tok in ("+", "-", "*", "/"):
++        if tok in ("+", "-", "*", "/", "//", "**", "%"):
+             b = stack.pop()
+             a = stack.pop()
+             stack.append(apply_op(tok, a, b))

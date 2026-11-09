@@ -1,0 +1,23 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -2,11 +2,18 @@
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+     for v, s in vals:
+-        while n >= v:
++        # Count how many times we can use the current value before moving to larger values
++        count = 0
++        while n >= v * 2:  # Need at least two of current value before moving to larger value
+             out += s
+             n -= v
++            count += 1
++        if count > 0:
++            # Use remaining value
++            while n >= v:
++                out += s
++                n -= v
+     return out
+-
+ 
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}

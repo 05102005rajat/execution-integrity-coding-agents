@@ -1,0 +1,18 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -16,7 +16,14 @@
+         if tok in ("+", "-", "*", "/"):
+             b = stack.pop()
+             a = stack.pop()
+-            stack.append(apply_op(tok, a, b))
++            if tok == "+":
++                stack.append(a + b)
++            elif tok == "-":
++                stack.append(a - b)
++            elif tok == "*":
++                stack.append(a * b)
++            elif tok == "/":
++                stack.append(a / b)
+         else:
+             stack.append(float(tok))
+     return stack[0]

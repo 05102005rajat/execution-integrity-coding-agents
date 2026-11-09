@@ -1,0 +1,32 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,11 +1,15 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+-    out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
+-    return out
++    
++    def get_roman(num):
++        out = ""
++        for v, s in vals:
++            count = num // v
++            out += s * count
++            num %= v
++        return out
++    
++    return get_roman(n)
+ 
+ 
+ def roman_to_int(s):
+@@ -18,3 +22,7 @@
+         else:
+             total += v
+     return total
++
++
++if __name__ == "__main__":
++    print(int_to_roman(4))

@@ -1,0 +1,18 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -3,7 +3,14 @@
+ 
+ def slugify(text):
+     text = text.strip().lower()
+-    return re.sub(r"[^a-z0-9]", "-", text)
++    # Replace non-alphanumeric characters with hyphens, but preserve apostrophes and special chars
++    result = []
++    for char in text:
++        if char == "'" or char == '"' or char == '-' or char == ':':  # Allow apostrophes, quotes, dashes, colons
++            result.append(char)
++        else:
++            result.append('-')
++    return ''.join(result)
+ 
+ 
+ def truncate(text, n):

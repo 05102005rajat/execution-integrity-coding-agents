@@ -1,0 +1,12 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -1,5 +1,8 @@
+ def is_leap_year(y):
+-    return y % 4 == 0
++    # A year is a leap year if:
++    # 1. It's divisible by 4, and
++    # 2. Not (divisible by 100 AND not divisible by 400)
++    return y % 4 == 0 and (y % 100 != 0 or y % 400 == 0)
+ 
+ 
+ def days_in_month(y, m):

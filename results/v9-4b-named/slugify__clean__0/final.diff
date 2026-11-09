@@ -1,0 +1,13 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -3,7 +3,9 @@
+ 
+ def slugify(text):
+     text = text.strip().lower()
+-    return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
++    # Keep only ASCII letters, numbers, hyphens, and spaces
++    text = re.sub(r"[^a-z0-9\s\-]+", "-", text)
++    return text.strip("-").replace("-", "-")
+ 
+ 
+ def truncate(text, n):

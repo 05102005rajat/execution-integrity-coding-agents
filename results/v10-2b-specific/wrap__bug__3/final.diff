@@ -1,0 +1,16 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -8,10 +8,13 @@
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+         if len(cur) + extra > width - 1:
++            # Can't fit the word on current line
+             lines.append(cur)
+             cur = w
+         else:
++            # Fits, append with space
+             cur = f"{cur} {w}" if cur else w
+     if cur:
+         lines.append(cur)
+     return lines
++

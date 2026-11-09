@@ -1,0 +1,16 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -2,11 +2,11 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return b - a
++        return a - b
+     if op == "*":
+         return a * b
+     if op == "/":
+-        return a / b
++        return b / a
+     raise ValueError(op)
+ 
+ 

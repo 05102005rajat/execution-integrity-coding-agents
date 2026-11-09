@@ -1,0 +1,25 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,10 +1,22 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
++    
++    # Handle special cases that require subtraction (IV, IX, XL, XC)
++    if n == 4:
++        return "IV"
++    elif n == 9:
++        return "IX"
++    elif n == 40:
++        return "XL"
++    elif n == 90:
++        return "XC"
++    
+     for v, s in vals:
+         while n >= v:
+             out += s
+             n -= v
++    
+     return out
+ 
+ 

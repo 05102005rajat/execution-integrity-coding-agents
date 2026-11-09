@@ -1,0 +1,29 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -5,9 +5,15 @@
+     ]
+     out = ""
+     for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++        # If the value is 4 or a subtractive notation value (like IX, XL, XC), handle specially
++        if v == 4 or v == 9 or v == 19 or v == 29:
++            while n >= v and n % 10 != 0:
++                out += s
++                n -= v
++        else:
++            while n >= v:
++                out += s
++                n -= v
+     return out
+ 
+ 
+@@ -21,3 +27,7 @@
+         else:
+             total += v
+     return total
++
++
++if __name__ == "__main__":
++    print(int_to_roman(4))

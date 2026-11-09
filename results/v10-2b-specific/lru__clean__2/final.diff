@@ -1,0 +1,13 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -14,6 +14,10 @@
+     def put(self, key, value):
+         if key in self.data:
+             self.order.remove(key)
++            # Evict the oldest item when updating an existing key and capacity is reached
++            while len(self.order) > 0 and len(self.data) >= self.capacity:
++                self.order.pop(0)
++                del self.data[self.order[0]]
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]

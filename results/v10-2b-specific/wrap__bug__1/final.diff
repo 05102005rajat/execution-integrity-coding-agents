@@ -1,0 +1,24 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -7,11 +7,20 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
++        print(f"Processing {w}, cur={repr(cur)}, extra={extra}")
++        print(f"len(cur) + extra = {len(cur) + extra}, width - 1 = {width - 1}")
+         if len(cur) + extra > width - 1:
+             lines.append(cur)
+             cur = w
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            # Append space if cur is not empty, otherwise just add the word
++            cur += " " + w if cur else w
+     if cur:
+         lines.append(cur)
+     return lines
++
++print("Test wrapping 'aaa bbb ccc' with width 7:")
++result = wrap("aaa bbb ccc", 7)
++for line in result:
++    print(f"  '{line}'")
++print()

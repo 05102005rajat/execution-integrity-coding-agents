@@ -1,0 +1,16 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,12 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m:
++        return []
++    # Get the length of the longest row to determine how many rows in result
++    max_len = max(len(row) for row in m) if m else 0
++    # Pad shorter rows with None to ensure all have same length
++    padded = [row + [None] * (max_len - len(row)) for row in m]
++    # Transpose: zip(*padded) gives us columns as tuples, convert to list
++    return [list(r) for r in zip(*padded)]
+ 
+ 
+ def identity(n):

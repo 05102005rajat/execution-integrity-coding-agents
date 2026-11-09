@@ -1,0 +1,16 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -3,6 +3,8 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
++            if n == v:
++                break
+             out += s
+             n -= v
+     return out
+@@ -18,3 +20,4 @@
+         else:
+             total += v
+     return total
++

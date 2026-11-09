@@ -1,0 +1,9 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -9,4 +9,5 @@
+ def truncate(text, n):
+     if len(text) <= n:
+         return text
+-    return text[: n - 3] + "..."
++    return text[:n] + "..."
++

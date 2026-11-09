@@ -1,0 +1,17 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -7,8 +7,13 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width:
++        # If the word itself is too long to fit on a single line,
++        # we just place it anyway (this is typical wrapping behavior)
++        if len(cur) + extra > width and cur:
+             lines.append(cur)
++            cur = w
++        elif cur == "" and len(w) > width:
++            # Word doesnt fit by itself, but we still place it
+             cur = w
+         else:
+             cur = f"{cur} {w}" if cur else w

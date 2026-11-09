@@ -1,0 +1,17 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -1,10 +1,14 @@
+ def mean(xs):
++    if not xs:
++        return 0
+     return sum(xs) / len(xs)
+ 
+ 
+ def median(xs):
+     s = sorted(xs)
+     n = len(s)
++    if n == 0:
++        return 0
+     mid = n // 2
+     if n % 2 == 1:
+         return s[mid]

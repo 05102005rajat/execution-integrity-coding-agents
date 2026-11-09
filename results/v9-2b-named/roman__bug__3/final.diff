@@ -1,0 +1,40 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,10 +1,33 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++    
++    # Special case: use smaller values before larger ones when they come before them
++    if n >= 4:
++        out += "IV"
++        n -= 4
++    if n >= 9:
++        out += "IX"
++        n -= 9
++    if n >= 40:
++        out += "XL"
++        n -= 40
++    if n >= 90:
++        out += "XC"
++        n -= 90
++    if n >= 50:
++        out += "L"
++        n -= 50
++    if n >= 10:
++        out += "X"
++        n -= 10
++    if n >= 5:
++        out += "V"
++        n -= 5
++    if n >= 1:
++        out += "I"
++        n -= 1
++    
+     return out
+ 
+ 

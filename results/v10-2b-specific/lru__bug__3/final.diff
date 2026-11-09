@@ -1,0 +1,45 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -1,22 +1,35 @@
++from collections import OrderedDict
++
++
+ class LRUCache:
+     def __init__(self, capacity):
+         self.capacity = capacity
+-        self.data = {}
+-        self.order = []
++        self.data = OrderedDict()
++        # Track insertion order of keys in the cache (first is oldest)
++        self.order = OrderedDict()
+ 
+     def get(self, key):
+         if key not in self.data:
+             return None
++        # Move to end (most recently used)
++        self.data[key] = None  # Mark as accessed
++        self.order.move_to_end(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
+-            self.order.remove(key)
++            # Key exists - refresh it and mark as accessed (move to end)
++            self.data[key] = value
++            self.order.move_to_end(key)
+         elif len(self.data) >= self.capacity:
+-            oldest = self.order.pop(0)
+-            del self.data[oldest]
+-        self.data[key] = value
+-        self.order.append(key)
++            # Evict the oldest (first) entry
++            oldest_key = next(iter(self.order))  # Get the first key in order
++            del self.order[oldest_key]
++            del self.data[oldest_key]
++        else:
++            # Cache is not full, add new key
++            self.data[key] = value
++            self.order[key]
+ 
+     def __len__(self):
+         return len(self.data)

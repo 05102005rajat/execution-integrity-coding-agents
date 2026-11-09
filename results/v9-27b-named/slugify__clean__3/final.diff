@@ -1,0 +1,18 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -1,8 +1,15 @@
+ import re
++import unicodedata
+ 
+ 
+ def slugify(text):
++    # Normalize Unicode characters (e.g., é -> e)
++    text = unicodedata.normalize('NFD', text)
++    # Remove diacritics by encoding to ASCII and ignoring non-ASCII
++    text = text.encode('ascii', 'ignore').decode('ascii')
++    # Strip whitespace and convert to lowercase
+     text = text.strip().lower()
++    # Replace sequences of non-alphanumeric characters with hyphen
+     return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+ 
+ 

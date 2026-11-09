@@ -1,0 +1,11 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -3,6 +3,8 @@
+ 
+ 
+ def median(xs):
++    if not xs:
++        raise ValueError("median() arg is an empty sequence")
+     s = sorted(xs)
+     n = len(s)
+     mid = n // 2

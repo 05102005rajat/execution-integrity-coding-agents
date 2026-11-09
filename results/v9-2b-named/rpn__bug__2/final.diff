@@ -1,0 +1,41 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -2,16 +2,24 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return b - a
++        # Stack has [a, b] after popping; we need to compute (a - b)
++        # So pop b first, then a
++        b = stack.pop()
++        a = stack.pop()
++        return a - b
+     if op == "*":
+         return a * b
+     if op == "/":
++        # Stack has [a, b] after popping; we need to compute (a / b)
++        # So pop b first, then a
++        b = stack.pop()
++        a = stack.pop()
+         return a / b
+     raise ValueError(op)
+ 
++stack = []  # Define module-level stack before evaluate function uses it
+ 
+ def evaluate(expr):
+-    stack = []
+     for tok in expr.split():
+         if tok in ("+", "-", "*", "/"):
+             b = stack.pop()
+@@ -20,3 +28,11 @@
+         else:
+             stack.append(float(tok))
+     return stack[0]
++
++# Tests
++assert evaluate("3 4 +") == 7.0
++assert evaluate("2 3 *") == 6.0
++assert evaluate("8 2 /") == 4.0
++assert evaluate("10 4 -") == 6.0
++assert evaluate("5 1 2 + 4 * + 3 -") == 14.0
++print("All tests passed!")

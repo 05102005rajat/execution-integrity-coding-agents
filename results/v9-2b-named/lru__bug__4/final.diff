@@ -1,0 +1,11 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,6 +7,8 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
++        # Move to end to mark as most recently used
++        self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
