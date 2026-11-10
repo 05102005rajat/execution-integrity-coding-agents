@@ -1,0 +1,36 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,12 +1,16 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++    while n > 0:
++        for v, s in vals:
++            if n >= v:
++                out += s
++                n -= v
++                break
++        else:
++            continue
++        break
+     return out
+-
+ 
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+@@ -18,3 +22,11 @@
+         else:
+             total += v
+     return total
++
++# Test the fix
++assert int_to_roman(4) == "IV", f"Expected 'IV', got '{int_to_roman(4)}'"
++assert int_to_roman(3) == "III", f"Expected 'III', got '{int_to_roman(3)}'"
++assert int_to_roman(10) == "X", f"Expected 'X', got '{int_to_roman(10)}'"
++assert int_to_roman(59) == "LVIX", f"Expected 'LVIX', got '{int_to_roman(59)}'"
++
++print("All tests passed!")

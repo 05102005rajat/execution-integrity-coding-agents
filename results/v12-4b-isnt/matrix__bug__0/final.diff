@@ -1,0 +1,21 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,6 +1,9 @@
+ def transpose(m):
++    if not m:
++        return []
+     n = len(m)
+-    return [[m[j][i] for j in range(n)] for i in range(n)]
++    m_len = len(m[0]) if m else 0
++    return [[m[j][i] for j in range(n)] for i in range(m_len)]
+ 
+ 
+ def identity(n):
+@@ -8,4 +11,7 @@
+ 
+ 
+ def matmul(a, b):
++    rows = len(a)
++    cols = len(b[0]) if b else 0
++    m_cols = len(b)
+     return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in a]

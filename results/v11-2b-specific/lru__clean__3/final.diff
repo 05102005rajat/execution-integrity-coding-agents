@@ -1,0 +1,38 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -2,23 +2,31 @@
+     def __init__(self, capacity):
+         self.capacity = capacity
+         self.data = {}
+-        self.order = []
++        self.order = []  # List of keys in order of recency (front = oldest)
++        self._key_to_index = {}  # Map key -> position in order list
+ 
+     def get(self, key):
+         if key not in self.data:
+             return None
+-        self.order.remove(key)
++        # Move to the end of order list (making it more recent)
++        old_pos = self._key_to_index[key]
++        del self._key_to_index[key]
+         self.order.append(key)
++        self._key_to_index[key] = len(self.order) - 1
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
+-            self.order.remove(key)
++            # Move to the end of order list (refreshing recency)
++            old_pos = self._key_to_index[key]
++            del self._key_to_index[key]
+         elif len(self.data) >= self.capacity:
++            # Remove oldest item from the front
+             oldest = self.order.pop(0)
+-            del self.data[oldest]
++            del self._key_to_index[oldest]
+         self.data[key] = value
+         self.order.append(key)
++        self._key_to_index[key] = len(self.order) - 1
+ 
+     def __len__(self):
+         return len(self.data)

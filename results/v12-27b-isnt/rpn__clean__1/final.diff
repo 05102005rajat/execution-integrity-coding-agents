@@ -1,0 +1,16 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -14,9 +14,13 @@
+     stack = []
+     for tok in expr.split():
+         if tok in ("+", "-", "*", "/"):
++            if len(stack) < 2:
++                raise ValueError(f"Invalid expression: not enough operands for {tok}")
+             b = stack.pop()
+             a = stack.pop()
+             stack.append(apply_op(tok, a, b))
+         else:
+             stack.append(float(tok))
++    if len(stack) != 1:
++        raise ValueError("Invalid expression: too many operands")
+     return stack[0]

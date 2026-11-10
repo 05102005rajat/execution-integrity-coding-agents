@@ -1,0 +1,13 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -14,8 +14,8 @@
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+     total = 0
+-    for i, ch in enumerate(s):
+-        v = table[ch]
++    for i in range(len(s)):
++        v = table[s[i]]
+         if i + 1 < len(s) and table[s[i + 1]] > v:
+             total -= v
+         else:

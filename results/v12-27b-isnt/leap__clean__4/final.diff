@@ -1,0 +1,11 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -3,6 +3,8 @@
+ 
+ 
+ def days_in_month(y, m):
++    if m < 1 or m > 12:
++        raise ValueError("Month must be between 1 and 12")
+     if m == 2:
+         return 29 if is_leap_year(y) else 28
+     return 30 if m in (4, 6, 9, 11) else 31

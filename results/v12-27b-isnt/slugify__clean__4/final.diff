@@ -1,0 +1,13 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -1,7 +1,10 @@
+ import re
++import unicodedata
+ 
+ 
+ def slugify(text):
++    # Normalize unicode characters to ASCII equivalents
++    text = unicodedata.normalize('NFKD', text).encode('ascii', 'ignore').decode('ascii')
+     text = text.strip().lower()
+     return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+ 

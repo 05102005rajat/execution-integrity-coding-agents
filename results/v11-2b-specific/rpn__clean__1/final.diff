@@ -1,0 +1,11 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -2,7 +2,7 @@
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return a - b
++        return b - a  # Swap because stack gives us (right, left)
+     if op == "*":
+         return a * b
+     if op == "/":

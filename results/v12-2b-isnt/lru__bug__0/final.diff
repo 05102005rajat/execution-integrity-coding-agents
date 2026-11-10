@@ -1,0 +1,30 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,16 +7,25 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
++        # Move to end (most recently used)
++        self.order.remove(key)
++        self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
++            # Key exists - refresh it from the beginning of order
++            self.data[key] = value
+             self.order.remove(key)
++            self.order.insert(0, key)  # Move to front (most recently used)
+         elif len(self.data) >= self.capacity:
++            # Evict oldest entry
+             oldest = self.order.pop(0)
+             del self.data[oldest]
+-        self.data[key] = value
+-        self.order.append(key)
++        else:
++            # Insert new key at the beginning
++            self.data[key] = value
++            self.order.insert(0, key)
+ 
+     def __len__(self):
+         return len(self.data)

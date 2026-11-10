@@ -1,0 +1,13 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -6,8 +6,8 @@
+     s = sorted(xs)
+     n = len(s)
+     mid = n // 2
+-    if n % 2 == 1:
+-        return s[mid]
++    if n % 2 == 0:
++        return (s[mid - 1] + s[mid]) / 2
+     return s[mid]
+ 
+ 

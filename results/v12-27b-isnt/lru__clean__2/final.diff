@@ -1,0 +1,16 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -14,9 +14,12 @@
+     def put(self, key, value):
+         if key in self.data:
+             self.order.remove(key)
+-        elif len(self.data) >= self.capacity:
++        elif len(self.data) >= self.capacity and self.capacity > 0:
+             oldest = self.order.pop(0)
+             del self.data[oldest]
++        elif self.capacity == 0:
++            # If capacity is 0, we can't store anything
++            return
+         self.data[key] = value
+         self.order.append(key)
+ 

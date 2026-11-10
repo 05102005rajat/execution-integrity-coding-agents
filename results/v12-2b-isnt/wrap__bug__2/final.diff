@@ -1,0 +1,31 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -1,17 +1,23 @@
++import re
++
+ def count_words(text):
+-    return len(text.split())
++    return len(re.findall(r'\b\w+\b', text))
+ 
+ 
+ def wrap(text, width):
+     lines = []
+     cur = ""
+-    for w in text.split():
+-        extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width - 1:
++    for w in re.split(r'\s+', text):
++        # Check if we need to wrap BEFORE adding the word
++        if len(cur) + len(w) > width - 1:
+             lines.append(cur)
+             cur = w
++        elif cur:
++            # Add a space after the current line if it's not empty
++            cur += " " + w
+         else:
+-            cur = f"{cur} {w}" if cur else w
++            # First word, just add it (no leading space)
++            cur = w
+     if cur:
+         lines.append(cur)
+     return lines

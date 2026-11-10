@@ -1,0 +1,19 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -3,8 +3,14 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
+-            out += s
+-            n -= v
++            if n - v <= 3:
++                # Use subtraction when the result would be less than or equal to 3
++                out += s * int(n // v)
++                n %= v
++            else:
++                # Use addition for values greater than 3
++                out += s
++                n -= v
+     return out
+ 
+ 

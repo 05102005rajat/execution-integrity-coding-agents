@@ -1,0 +1,12 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -7,7 +7,8 @@
+     cur = ""
+     for w in text.split():
+         extra = len(w) + (1 if cur else 0)
+-        if len(cur) + extra > width - 1:
++        # Start new line when adding this word would exceed or equal the width limit
++        if len(cur) + extra > width:
+             lines.append(cur)
+             cur = w
+         else:

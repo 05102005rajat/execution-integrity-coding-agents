@@ -1,0 +1,9 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,5 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    return [list(r) for r in zip(m)]
+ 
+ 
+ def identity(n):

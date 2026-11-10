@@ -1,0 +1,14 @@
+--- a/src/__init__.py
++++ b/src/__init__.py
+@@ -0,0 +1,3 @@
++from .slugify import slugify, truncate
++
++__all__ = ['slugify', 'truncate']
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -9,4 +9,4 @@
+ def truncate(text, n):
+     if len(text) <= n:
+         return text
+-    return text[: n - 3] + "..."
++    return text[:n-1] + "..."

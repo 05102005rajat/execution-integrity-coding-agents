@@ -1,0 +1,36 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,12 +1,21 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
++    
++    # Process large values to handle the main subtraction cases (IV, IX, XL, XC)
+     for v, s in vals:
+-        while n >= v:
++        while n >= v and (v == 1 or n % v == 0):
+             out += s
+             n -= v
++    
++    # Handle IV, IX, XL, XC - these need special handling because they require
++    # using a larger value to subtract from a smaller one
++    for i in range(3, 0, -1):  # X, C, D, M
++        while n >= vals[i][0] and (vals[i][0] == 1 or n % vals[i][0] == 0):
++            out += vals[i][1]
++            n -= vals[i][0]
++    
+     return out
+-
+ 
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+@@ -18,3 +27,9 @@
+         else:
+             total += v
+     return total
++
++# Test the fix
++print("Result for 4:", int_to_roman(4))
++print("Result for 3:", int_to_roman(3))
++print("Result for 58:", int_to_roman(58))
++print("Result for 1994:", int_to_roman(1994))

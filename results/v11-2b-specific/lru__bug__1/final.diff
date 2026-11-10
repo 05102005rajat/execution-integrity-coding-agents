@@ -1,0 +1,21 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -10,13 +10,17 @@
+         return self.data[key]
+ 
+     def put(self, key, value):
++        # Store keys and values as strings to ensure consistency with dict lookup
++        order_key = str(key)
++        self.order.append(order_key)
+         if key in self.data:
+             self.order.remove(key)
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]
+         self.data[key] = value
+-        self.order.append(key)
+ 
+     def __len__(self):
+         return len(self.data)
++
++

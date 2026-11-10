@@ -1,0 +1,9 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -19,4 +19,6 @@
+             stack.append(apply_op(tok, a, b))
+         else:
+             stack.append(float(tok))
++    if not stack:
++        raise ValueError("Empty expression")
+     return stack[0]

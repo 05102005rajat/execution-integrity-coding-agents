@@ -1,0 +1,16 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,6 +1,6 @@
+ def transpose(m):
+-    n = len(m)
+-    return [[m[j][i] for j in range(n)] for i in range(n)]
++    n = len(m[0])  # number of columns
++    return [[m[j][i] for j in range(len(m))] for i in range(n)]
+ 
+ 
+ def identity(n):
+@@ -9,3 +9,4 @@
+ 
+ def matmul(a, b):
+     return [[sum(x * y for x, y in zip(row, col)) for col in zip(*b)] for row in a]
++

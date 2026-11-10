@@ -1,0 +1,28 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -7,16 +7,24 @@
+         return a * b
+     if op == "/":
+         return a / b
+-    raise ValueError(op)
++    raise ValueError(f"Unknown operator: {op}")
+ 
+ 
+ def evaluate(expr):
+     stack = []
+     for tok in expr.split():
+         if tok in ("+", "-", "*", "/"):
++            if len(stack) < 2:
++                raise ValueError(f"Not enough operands for operator '{tok}'")
+             b = stack.pop()
+             a = stack.pop()
+             stack.append(apply_op(tok, a, b))
+         else:
+             stack.append(float(tok))
++    
++    if len(stack) == 0:
++        raise ValueError("Empty expression")
++    if len(stack) > 1:
++        raise ValueError(f"Expression left {len(stack)} items on the stack")
++    
+     return stack[0]

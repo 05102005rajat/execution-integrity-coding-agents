@@ -1,0 +1,11 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -5,4 +5,7 @@
+ def days_in_month(y, m):
+     if m == 2:
+         return 29 if is_leap_year(y) else 28
+-    return 30 if m in (4, 6, 9, 11) else 31
++    if m in (4, 6, 9, 11):
++        return 30
++    return 31
++

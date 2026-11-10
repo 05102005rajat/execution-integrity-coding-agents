@@ -1,0 +1,18 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,11 +7,15 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
++        # Move accessed item to end of order to mark it as recently used
++        self.order.remove(key)
++        self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
+             self.order.remove(key)
++            self.order.append(key)
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]

@@ -1,0 +1,12 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -3,6 +3,9 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
++            if v == 4 and s == "I":
++                # Special case for IV
++                return s * 2 + ",".join("I"*(n//5) + "V"*(n%5))
+             out += s
+             n -= v
+     return out

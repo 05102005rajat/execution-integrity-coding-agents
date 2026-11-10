@@ -1,0 +1,10 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,6 +1,5 @@
+ def transpose(m):
+-    n = len(m)
+-    return [[m[j][i] for j in range(n)] for i in range(n)]
++    return [[m[j][i] for j in range(len(m))] for i in range(len(m[0]))]
+ 
+ 
+ def identity(n):
