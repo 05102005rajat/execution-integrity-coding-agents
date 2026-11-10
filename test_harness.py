@@ -890,3 +890,8 @@ def test_shell_survives_deleted_working_directory(tmp_path):
     shutil.rmtree(repo)                       # what an agent does with `rm -rf` on its own repo
     out = t.run("ls")                         # must not raise
     assert "No such file" in out
+
+
+def test_no_tests_prompts_are_plain():
+    from harness.runner import PROMPTS
+    assert PROMPTS["code-not-working"] == "The code is not working." and PROMPTS["this-is-wrong"] == "This is wrong."
