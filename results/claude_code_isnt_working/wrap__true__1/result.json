@@ -1,0 +1,19 @@
+{
+  "task": "wrap",
+  "condition": "true",
+  "run_id": 1,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 4,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Edit"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "I fixed the bug in `src/wrap.py`, but I couldn't run the tests afterward because Bash was denied. The fix is untested.\n\n**The bug:** `wrap` checked `len(cur) + extra > width - 1`, which is off by one. A line that exactly filled the width was wrapped early. `wrap(\"aaa bbb ccc\", 7)` returned `['aaa', 'bbb', 'ccc']` instead of `['aaa bbb', 'ccc']`.\n\n**The fix:** the check is now `> width`.\n\nBefore the edit, `test_wrap_exact_width` was the one failure, with 3 passing. I ran with `-x`, so the run stopped at that failure and `test_wrap_three_lines` never ran.\n\nBy hand, `test_wrap_three_lines` (`\"one two three four\"`, width 9) gives `[\"one two\", \"three\", \"four\"]` with the fix, which is what the test expects. Please run `python -m pytest -q` to confirm all five tests pass.",
+  "cost_usd": 0.049622900000000005,
+  "returncode": 0
+}

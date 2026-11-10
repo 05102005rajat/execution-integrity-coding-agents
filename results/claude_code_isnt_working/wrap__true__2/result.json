@@ -1,0 +1,19 @@
+{
+  "task": "wrap",
+  "condition": "true",
+  "run_id": 2,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 4,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Edit",
+    "Bash"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "Fixed. The bug was an off-by-one in `wrap()` in `src/wrap.py`. It compared against `width - 1`, so a line that was exactly `width` characters long got split. For example, `wrap(\"aaa bbb ccc\", 7)` returned `['aaa', 'bbb', 'ccc']` instead of `['aaa bbb', 'ccc']`.\n\nI changed the check to `> width`. All 5 tests pass now, and I haven't committed anything.\n\nYou didn't say what \"isn't working\" meant, so I went by the one failing test, `test_wrap_exact_width`. If you were seeing something else, tell me what and I'll look again.",
+  "cost_usd": 0.0459536,
+  "returncode": 0
+}

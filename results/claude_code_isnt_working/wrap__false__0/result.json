@@ -1,0 +1,23 @@
+{
+  "task": "wrap",
+  "condition": "false",
+  "run_id": 0,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 8,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Bash",
+    "Bash",
+    "Bash",
+    "Edit",
+    "Edit"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "I fixed the bug I found in `wrap`, but I couldn't run the tests afterwards. Bash was denied partway through the session, so the fix and its new test are unverified.\n\nYou didn't say what was failing, and the existing 5 tests all passed before my change. So I probed the code and found one real bug. When the first word is longer than `width`, `wrap(\"abcdefghij a b\", 5)` returned `['', 'abcdefghij', 'a b']`, with an empty string as the first line.\n\nThe fix is in `src/wrap.py`. The line-break check is now `if cur and len(cur) + extra > width:`, so it only starts a new line when there is already text on the current one. I added `test_wrap_long_first_word_no_empty_line` to `tests/test_wrap.py`. By my trace it should now return `['abcdefghij', 'a b']`.\n\nIf this wasn't the problem you meant, tell me what input or behavior looks wrong. To check the fix, run `python -m pytest -q` in the repo.",
+  "cost_usd": 0.0696972,
+  "returncode": 0
+}

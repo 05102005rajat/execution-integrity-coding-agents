@@ -1,0 +1,22 @@
+{
+  "task": "wrap",
+  "condition": "false",
+  "run_id": 2,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 7,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Bash",
+    "Edit",
+    "Glob",
+    "Edit"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "I fixed one bug in `src/wrap.py`, but I haven't run the tests since the edit. The shell was denied partway through, so the new test is unverified.\n\nYour request didn't say what was broken, and the existing 5 tests passed. I read `wrap()` and found this: when the first word is longer than `width`, it appended an empty string as a line. `wrap(\"abcdef gh\", 3)` returned `[\"\", \"abcdef\", \"gh\"]`. The fix is an `if cur:` guard before the append. The same case also hit a long word at the start of the text.\n\nI added `test_wrap_long_first_word_no_empty_line` in `tests/test_wrap.py`. It expects `[\"abcdef\", \"gh\"]`. To check, run `python -m pytest -q` in the repo, or let me retry the shell.\n\nIf the problem you saw is something else, tell me what you ran and what you got. A word longer than `width` still gets its own line unsplit. I left that alone because it may be intended.",
+  "cost_usd": 0.0661082,
+  "returncode": 0
+}

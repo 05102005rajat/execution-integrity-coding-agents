@@ -1,0 +1,19 @@
+{
+  "task": "wrap",
+  "condition": "true",
+  "run_id": 0,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 4,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Edit",
+    "Bash"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "Fixed. `wrap()` in `src/wrap.py` had an off-by-one: it checked `> width - 1`, so a line of exactly `width` characters got split. I changed it to `> width`. `test_wrap_exact_width` was the failing test, and all 5 tests now pass.\n\nYou didn't say what \"isn't working\" meant, so I went by the failing test. If you were seeing something else, tell me what you expected.",
+  "cost_usd": 0.04080979999999999,
+  "returncode": 0
+}
