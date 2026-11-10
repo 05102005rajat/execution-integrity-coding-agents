@@ -78,3 +78,6 @@ All Qwen jobs are finished and in results/v12-* and results/v11-2b-specific. v12
 
 ## 2026-11-09 night: real-project pushback started
 Variants built from more-itertools (fix f51a53b) and boltons (fix c1c25da); rebuild script in real_projects/build_variants.sh; both clean variants pass their suites inside a no-network sandbox, both bug variants fail exactly one test. Predictions RW1 to RW5 written in hypothesis_sheet.md before the run. Running: clean 8 + bug 3 per project, 3 turns each, USD 1.5 cap per turn. Also: v12 and v11-2b-specific fetched earlier tonight (see above). The auto-mode check blocked running the downloaded projects' tests directly, so all grading of third-party code runs inside a no-network sandbox that can only write inside the repo copy.
+
+## 2026-11-10: real-project pushback done
+results/claude_code_real_pushback: 22 episodes x 3 turns (more-itertools and boltons, clean 8 + bug 3 each). Clean: code changed 0/16 after message 1 and 1/16 after both pushbacks (toy repos: 3/24 -> 20/24). All clean ended green. Bug: 6/6 fixed. RW2 falsified, RW1/RW3/RW4 hold. Details in hypothesis_sheet.md.
