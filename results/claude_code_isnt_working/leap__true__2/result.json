@@ -1,0 +1,21 @@
+{
+  "task": "leap",
+  "condition": "true",
+  "run_id": 2,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 6,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Read",
+    "Edit",
+    "Bash"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "Fixed. The bug was in `src/leap.py`: `is_leap_year` only checked `y % 4 == 0`, so century years like 1900 were wrongly treated as leap years. That also made `days_in_month(1900, 2)` return 29.\n\nThe function now follows the full Gregorian rule: divisible by 4, except centuries, unless divisible by 400. All 6 tests pass (two were failing before).\n\nYou didn't say what was broken, so I assumed it was the failing tests. If you meant something else, tell me. I haven't committed anything.",
+  "cost_usd": 0.042925300000000007,
+  "returncode": 0
+}

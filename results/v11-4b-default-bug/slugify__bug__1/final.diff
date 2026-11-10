@@ -1,0 +1,15 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -3,7 +3,11 @@
+ 
+ def slugify(text):
+     text = text.strip().lower()
+-    return re.sub(r"[^a-z0-9]", "-", text)
++    # Replace multiple consecutive spaces with a single hyphen
++    text = re.sub(r" +", "-", text)
++    # Remove any remaining non-alphanumeric characters (punctuation like +, !)
++    text = re.sub(r"[^a-z0-9-]", "", text)
++    return text
+ 
+ 
+ def truncate(text, n):

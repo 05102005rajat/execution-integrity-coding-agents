@@ -1,0 +1,9 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -1,4 +1,6 @@
+ def mean(xs):
++    if not xs:
++        raise ValueError("Cannot compute mean of empty list")
+     return sum(xs) / len(xs)
+ 
+ 

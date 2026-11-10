@@ -1,0 +1,28 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,13 +7,22 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
+-        self.order.remove(key)
+-        self.order.append(key)
++        # If the key is at the front of the order (most recent), move it to position 0
++        if key == self.order[0]:
++            self.order.remove(key)
++        else:
++            # Move all keys after this one to the end, and insert at front
++            self.order.insert(0, key)
+         return self.data[key]
+ 
+     def put(self, key, value):
+         if key in self.data:
+-            self.order.remove(key)
++            # Update order for existing key
++            if key not in self.order:
++                self.order.insert(0, key)
++            else:
++                self.order.remove(key)
++                self.order.insert(0, key)
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]

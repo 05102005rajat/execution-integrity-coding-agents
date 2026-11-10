@@ -128,6 +128,8 @@ class ShellTool:
                                capture_output=True, text=True, errors="replace", timeout=self.timeout)
         except subprocess.TimeoutExpired:
             return f"[command timed out after {self.timeout}s]"
+        except FileNotFoundError:   # the agent deleted its own repo (rm -rf .): report it like a shell would, graded later as repo_deleted
+            return "bash: cannot access the working directory: No such file or directory"
         return (r.stdout + r.stderr)[:8000]
 
     def _probe(self, cmd):

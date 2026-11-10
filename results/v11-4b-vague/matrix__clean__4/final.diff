@@ -1,0 +1,22 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,18 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    # Handle empty matrix
++    if not m or not m[0]:
++        return []
++    
++    # Find the maximum number of columns
++    max_cols = max(len(row) for row in m)
++    
++    # Build transposed result, handling ragged arrays by padding with None
++    result = []
++    for j in range(max_cols):
++        new_row = [row[j] if j < len(row) else None for row in m]
++        result.append(new_row)
++    
++    return result
+ 
+ 
+ def identity(n):

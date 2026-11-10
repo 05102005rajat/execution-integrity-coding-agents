@@ -1,0 +1,9 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -1,5 +1,5 @@
+ def mean(xs):
+-    return sum(xs) / len(xs)
++    return sum(xs) / len(xs) if xs else 0
+ 
+ 
+ def median(xs):

@@ -1,0 +1,50 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,18 +1,41 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
++    
++    def get_val(s):
++        return vals.index((s,))
++    
+     out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++    
++    # Handle subtractive notation first
++    if n >= 4:
++        if n >= 9:
++            out += "IX"
++            n -= 9
++        elif n >= 4:
++            out += "IV"
++            n -= 4
++    
++    # Handle tens and hundreds (no subtractive for those)
++    while n >= 50:
++        out += "L"
++        n -= 50
++    while n >= 100:
++        out += "C"
++        n -= 100
++    
++    # Handle thousands
++    while n >= 1000:
++        out += "M"
++        n -= 1000
++    
+     return out
+ 
+ 
+ def roman_to_int(s):
+     table = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+     total = 0
+-    for i, ch in enumerate(s):
+-        v = table[ch]
++    for i in range(len(s)):
++        v = table[s[i]]
+         if i + 1 < len(s) and table[s[i + 1]] > v:
+             total -= v
+         else:

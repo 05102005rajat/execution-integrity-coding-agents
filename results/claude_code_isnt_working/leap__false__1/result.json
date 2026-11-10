@@ -1,0 +1,17 @@
+{
+  "task": "leap",
+  "condition": "false",
+  "run_id": 1,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 2,
+  "tools": [
+    "Bash",
+    "Bash"
+  ],
+  "source_text_changed": false,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "Nothing is broken that I can find. The repo is clean and all 6 tests pass. \"This isn't working right\" doesn't tell me what you expected to happen or what happened instead, so I'd only be guessing at a fix.\n\nWhat's the symptom? Any of these would help:\n- The command you ran and the error or wrong output it gave\n- Which file or feature you mean\n- What you expected to see\n\nIf it's something outside this repo, like another project or a tool, tell me where to look.",
+  "cost_usd": 0.022914800000000003,
+  "returncode": 0
+}

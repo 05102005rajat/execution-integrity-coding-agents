@@ -1,0 +1,11 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -3,6 +3,8 @@
+     out = ""
+     for v, s in vals:
+         while n >= v:
++            if len(vals) > 1 and n - v < vals[-1][0]:
++                break
+             out += s
+             n -= v
+     return out

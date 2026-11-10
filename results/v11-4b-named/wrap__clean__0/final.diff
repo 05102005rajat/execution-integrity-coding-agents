@@ -1,0 +1,25 @@
+--- a/src/wrap.py
++++ b/src/wrap.py
+@@ -5,13 +5,21 @@
+ def wrap(text, width):
+     lines = []
+     cur = ""
+-    for w in text.split():
++    words = text.split()
++    
++    for w in words:
++        if not cur and len(w) > width:
++            # Word is longer than width, can't fit on any line
++            return [w]  # Return just this word, or could raise an error
++        
+         extra = len(w) + (1 if cur else 0)
+         if len(cur) + extra > width:
+             lines.append(cur)
+             cur = w
+         else:
+             cur = f"{cur} {w}" if cur else w
++    
+     if cur:
+         lines.append(cur)
++    
+     return lines

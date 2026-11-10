@@ -1,0 +1,32 @@
+--- a/src/roman.py
++++ b/src/roman.py
+@@ -1,10 +1,25 @@
+ def int_to_roman(n):
+     vals = [(1000, "M"), (500, "D"), (100, "C"), (50, "L"), (10, "X"), (5, "V"), (1, "I")]
+     out = ""
+-    for v, s in vals:
+-        while n >= v:
+-            out += s
+-            n -= v
++    while n > 0:
++        # Look ahead for the next larger value to handle subtraction cases
++        max_val = None
++        max_char = None
++        for v, s in vals:
++            if v > n:
++                break
++            if max_val is None or v > max_val:
++                max_val = v
++                max_char = s
++        
++        # If we found a larger value and it's not the smallest remaining value (1), 
++        # then we need to handle subtraction - take one of that value and continue
++        if max_val is not None and max_val != 1:
++            out += max_char * (n // max_val)
++            n = n % max_val
++        elif max_val == 1:
++            out += max_char
++    
+     return out
+ 
+ 

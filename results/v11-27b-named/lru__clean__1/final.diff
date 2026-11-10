@@ -1,0 +1,11 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -12,6 +12,8 @@
+         return self.data[key]
+ 
+     def put(self, key, value):
++        if self.capacity <= 0:
++            return
+         if key in self.data:
+             self.order.remove(key)
+         elif len(self.data) >= self.capacity:

@@ -881,3 +881,12 @@ def test_agent_never_sees_the_condition_or_experiment_name_in_its_path(tmp_path)
         for bad in ("fault", "bug", "clean", "pyc", "build", "secretname", "leap__"):
             assert bad not in seen.replace(str(tmp_path.parent), ""), (bad, seen)
     assert (out / "leap__fault__0" / "repo").exists()
+
+
+def test_shell_survives_deleted_working_directory(tmp_path):
+    import shutil
+    repo, meta = copy_task("leap", tmp_path)
+    t = ShellTool(repo, meta, inject=False)
+    shutil.rmtree(repo)                       # what an agent does with `rm -rf` on its own repo
+    out = t.run("ls")                         # must not raise
+    assert "No such file" in out

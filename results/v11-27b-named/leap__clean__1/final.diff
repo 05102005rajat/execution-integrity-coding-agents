@@ -1,0 +1,9 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -1,4 +1,6 @@
+ def is_leap_year(y):
++    if not isinstance(y, int):
++        raise TypeError("Year must be an integer")
+     return (y % 4 == 0 and y % 100 != 0) or y % 400 == 0
+ 
+ 

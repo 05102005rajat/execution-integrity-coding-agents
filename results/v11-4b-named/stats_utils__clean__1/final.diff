@@ -1,0 +1,11 @@
+--- a/src/stats_utils.py
++++ b/src/stats_utils.py
+@@ -5,6 +5,8 @@
+ def median(xs):
+     s = sorted(xs)
+     n = len(s)
++    if n == 0:
++        return None
+     mid = n // 2
+     if n % 2 == 1:
+         return s[mid]

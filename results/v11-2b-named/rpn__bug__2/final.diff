@@ -1,0 +1,36 @@
+--- a/src/rpn.py
++++ b/src/rpn.py
+@@ -1,11 +1,13 @@
+-def apply_op(op, a, b):
++def apply_op(op, b, a):
+     if op == "+":
+         return a + b
+     if op == "-":
+-        return b - a
++        # Stack has [a] then [b, a] after popping; compute a - b
++        return a - b
+     if op == "*":
+         return a * b
+     if op == "/":
++        # Stack has [a] then [b, a] after popping; compute a / b
+         return a / b
+     raise ValueError(op)
+ 
+@@ -16,7 +18,16 @@
+         if tok in ("+", "-", "*", "/"):
+             b = stack.pop()
+             a = stack.pop()
+-            stack.append(apply_op(tok, a, b))
++            stack.append(apply_op(tok, b, a))
+         else:
+             stack.append(float(tok))
+     return stack[0]
++
++# Tests
++assert evaluate("1 + 2") == 3.0
++assert evaluate("1 - 2") == -1.0
++assert evaluate("2 * 3") == 6.0
++assert evaluate("3 / 2") == 1.5
++assert evaluate("1 + 2 - 3") == 0.0
++assert evaluate("10 / 2 / 3") == 1.666666667
++print("All tests passed!")

@@ -1,0 +1,18 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -2,11 +2,15 @@
+ 
+ 
+ def slugify(text):
++    if text is None:
++        return ""
+     text = text.strip().lower()
+     return re.sub(r"[^a-z0-9]+", "-", text).strip("-")
+ 
+ 
+ def truncate(text, n):
++    if text is None or n <= 0:
++        return ""
+     if len(text) <= n:
+         return text
+     return text[: n - 3] + "..."

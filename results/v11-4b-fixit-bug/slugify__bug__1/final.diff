@@ -1,0 +1,17 @@
+--- a/src/slugify.py
++++ b/src/slugify.py
+@@ -3,7 +3,13 @@
+ 
+ def slugify(text):
+     text = text.strip().lower()
+-    return re.sub(r"[^a-z0-9]", "-", text)
++    # Replace non-alphanumeric characters with hyphens
++    text = re.sub(r"[^a-z0-9]", "-", text)
++    # Normalize multiple consecutive hyphens to single hyphen
++    text = re.sub(r"-+", "-", text)
++    # Remove leading and trailing hyphens
++    text = text.strip("-")
++    return text
+ 
+ 
+ def truncate(text, n):

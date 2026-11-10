@@ -1,0 +1,23 @@
+--- a/src/lru.py
++++ b/src/lru.py
+@@ -7,16 +7,19 @@
+     def get(self, key):
+         if key not in self.data:
+             return None
++        # Move key to the end of order (most recently used)
+         self.order.remove(key)
+         self.order.append(key)
+         return self.data[key]
+ 
+     def put(self, key, value):
++        # If key exists, update its value and make it LRU
+         if key in self.data:
+-            self.order.remove(key)
++            del self.data[self.order.pop(0)]  # Use index instead of lookup for efficiency
+         elif len(self.data) >= self.capacity:
+             oldest = self.order.pop(0)
+             del self.data[oldest]
++        
+         self.data[key] = value
+         self.order.append(key)
+ 

@@ -1,0 +1,24 @@
+--- a/src/matrix.py
++++ b/src/matrix.py
+@@ -1,5 +1,20 @@
+ def transpose(m):
+-    return [list(r) for r in zip(*m)]
++    if not m:
++        return []
++    
++    # Find the maximum row length to determine number of columns in result
++    max_col_len = max(len(row) for row in m)
++    
++    # Build columns
++    result = [[] for _ in range(max_col_len)]
++    
++    # For each column index, iterate through all rows
++    for col_idx in range(max_col_len):
++        for row in m:
++            if col_idx < len(row):
++                result[col_idx].append(row[col_idx])
++    
++    return result
+ 
+ 
+ def identity(n):

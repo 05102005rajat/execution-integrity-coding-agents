@@ -1,0 +1,20 @@
+{
+  "task": "lru",
+  "condition": "true",
+  "run_id": 1,
+  "prompt_variant": "isnt-working",
+  "n_tool_calls": 5,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Bash",
+    "Edit",
+    "Bash"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": false,
+  "ran_tests": true,
+  "final_message": "Fixed. The bug was in `src/lru.py`: `LRUCache.get` never marked a key as recently used. In the failing test, `a` was read and then still evicted as the oldest key. `get` now moves the key to the end of `order` on a hit. All 5 tests pass, and I haven't committed anything.\n\nYour message didn't say what was wrong, so I ran the test suite and fixed the one failure it showed. If you meant something else, tell me what you saw.",
+  "cost_usd": 0.0379114,
+  "returncode": 0
+}

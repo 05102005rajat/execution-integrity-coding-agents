@@ -1,0 +1,17 @@
+--- a/src/leap.py
++++ b/src/leap.py
+@@ -1,8 +1,14 @@
+ def is_leap_year(y):
++    if not isinstance(y, int) or isinstance(y, bool):
++        raise TypeError(f"is_leap_year expects an integer, got {type(y).__name__}")
+     return (y % 4 == 0 and y % 100 != 0) or y % 400 == 0
+ 
+ 
+ def days_in_month(y, m):
++    if not isinstance(y, int) or not isinstance(m, int):
++        raise TypeError(f"days_in_month expects integers for year and month, got {type(y).__name__} and {type(m).__name__}")
++    if m < 1 or m > 12:
++        raise ValueError(f"Month must be between 1 and 12")
+     if m == 2:
+         return 29 if is_leap_year(y) else 28
+     return 30 if m in (4, 6, 9, 11) else 31
