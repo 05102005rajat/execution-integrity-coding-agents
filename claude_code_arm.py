@@ -49,7 +49,7 @@ def run(task, cond, run_id, out, variant, max_turns, budget, followups=0):
     orig = ep / "orig"
     shutil.copytree(repo, orig)
     orig_files = {str(f.relative_to(orig)) for f in orig.rglob("*.py")}
-    prompt = build_prompt(variant, meta)
+    prompt = json.loads((ROOT / "real_projects" / "claims.json").read_text())[task] if variant == "real-specific" else build_prompt(variant, meta)
     base = ["claude", "-p", "--setting-sources", "project", "--disable-slash-commands", "--strict-mcp-config",
             "--permission-mode", "dontAsk", "--allowedTools", *ALLOWED, *SANDBOX_TOOLS, *SANDBOX_FLAGS, "--output-format", "stream-json", "--verbose",
             "--max-budget-usd", str(budget)]
