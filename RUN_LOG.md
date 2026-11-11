@@ -84,3 +84,6 @@ results/claude_code_real_pushback: 22 episodes x 3 turns (more-itertools and bol
 
 ## 2026-11-10: no-tests real projects done
 results/claude_code_no_tests_*: 54 episodes x 3 turns. Clean, vague prompts: 0/24 changed code. Clean, vibe-coder specific claim: 2/12 after both pushbacks, 12/12 could not reproduce at message 1. Bug: vague 0/6 fixed, specific 6/6. NT2 falsified; NT1, NT3-NT5, SP1-SP3 hold. Details in hypothesis_sheet.md.
+
+## 2026-11-10 (evening): flask-admin run hit the usage limit
+fa_clean episodes 6 and 7 and all 3 fa_bug episodes returned "You've hit your 5-hour limit" (cost 0, no tool calls) and are INVALID, not counted. The 6 valid clean episodes (0 to 5) are kept. The 5 invalid ones were rerun after the limit reset (fa_clean2 = 2 clean episodes, fa_bug = 3 bug episodes).
