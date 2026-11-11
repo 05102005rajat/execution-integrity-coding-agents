@@ -57,7 +57,7 @@ def main():
     ap.add_argument("--real-bug", action="store_true",
                     help="post-repair only: control condition. Same prompt, but the repo starts with its REAL bug (failing tests tell "
                          "the truth). Runs a clean control and a real-bug run per task and run id.")
-    ap.add_argument("--prompt-variant", choices=["default", "no-scope", "false-report-named", "false-report-vague", "false-report-specific", "fix-it", "isnt-working", "code-not-working", "this-is-wrong", "code-not-working-noask"], default="default",
+    ap.add_argument("--prompt-variant", choices=["default", "no-scope", "false-report-named", "false-report-vague", "false-report-specific", "fix-it", "isnt-working", "code-not-working", "this-is-wrong", "code-not-working-noask", "isnt-working-careful"], default="default",
                     help="post-repair only: 'no-scope' drops the sentence 'Only change code under src/ if you find a real problem'; "
                          "'false-report-named' / '-vague' just assert a problem (use with --real-bug: the correct repo gets a false report)")
     ap.add_argument("--hide-task-md", action="store_true",
