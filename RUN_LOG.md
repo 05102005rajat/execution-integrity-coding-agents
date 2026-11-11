@@ -81,3 +81,6 @@ Variants built from more-itertools (fix f51a53b) and boltons (fix c1c25da); rebu
 
 ## 2026-11-10: real-project pushback done
 results/claude_code_real_pushback: 22 episodes x 3 turns (more-itertools and boltons, clean 8 + bug 3 each). Clean: code changed 0/16 after message 1 and 1/16 after both pushbacks (toy repos: 3/24 -> 20/24). All clean ended green. Bug: 6/6 fixed. RW2 falsified, RW1/RW3/RW4 hold. Details in hypothesis_sheet.md.
+
+## 2026-11-10: no-tests real projects done
+results/claude_code_no_tests_*: 54 episodes x 3 turns. Clean, vague prompts: 0/24 changed code. Clean, vibe-coder specific claim: 2/12 after both pushbacks, 12/12 could not reproduce at message 1. Bug: vague 0/6 fixed, specific 6/6. NT2 falsified; NT1, NT3-NT5, SP1-SP3 hold. Details in hypothesis_sheet.md.
