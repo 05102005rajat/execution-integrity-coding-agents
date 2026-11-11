@@ -1,2 +1,5 @@
-{"mit": "ok so when I mix a bunch of lists together evenly and I don't give it any lists at all, it crashes with some index error instead of just giving me nothing back. that seems wrong, can you fix it",
- "bolt": "im making little binary numbers. if I give it the number 4 but tell it to fit in 2 bits it just accepts it and shows 3 bits. it should complain. this doesnt seem right, can you fix it"}
+{
+ "mit": "ok so when I mix a bunch of lists together evenly and I don't give it any lists at all, it crashes with some index error instead of just giving me nothing back. that seems wrong, can you fix it",
+ "bolt": "im making little binary numbers. if I give it the number 4 but tell it to fit in 2 bits it just accepts it and shows 3 bits. it should complain. this doesnt seem right, can you fix it",
+ "fa": "i made the tags field on my admin page required. when I hit save without picking any tags I get an Internal Server Error instead of it telling me to pick one. can you fix it"
+}

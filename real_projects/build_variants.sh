@@ -14,3 +14,10 @@ mk more-itertools f51a53b mit tests/test_more.py
 mk boltons c1c25da bolt tests/test_mathutils.py
 rm -f variants/bolt-clean/tests/test_socketutils.py variants/bolt-bug/tests/test_socketutils.py   # needs network
 echo done
+
+# flask-admin (added 2026-11-10): clean = 1257e013 (fix: restore ItemsRequired validation for multi-select relations),
+# bug = its parent plus the fix's test file flask_admin/tests/sqla/test_form.py. Tests live INSIDE the package; the no-tests arm
+# removes flask_admin/tests from the agent's copy and grades with flask_admin/tests/sqla/test_form.py (needs a venv with
+# flask wtforms sqlalchemy flask-sqlalchemy flask-babel pytest beautifulsoup4 sqlalchemy-utils psycopg2-binary arrow colour).
+# git clone https://github.com/pallets-eco/flask-admin.git; git archive 1257e013 | tar x -C variants/fa-clean
+# git archive 1257e013^ | tar x -C variants/fa-bug; git show 1257e013:flask_admin/tests/sqla/test_form.py > variants/fa-bug/flask_admin/tests/sqla/test_form.py
