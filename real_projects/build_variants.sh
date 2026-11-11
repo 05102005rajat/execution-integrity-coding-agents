@@ -21,3 +21,6 @@ echo done
 # flask wtforms sqlalchemy flask-sqlalchemy flask-babel pytest beautifulsoup4 sqlalchemy-utils psycopg2-binary arrow colour).
 # git clone https://github.com/pallets-eco/flask-admin.git; git archive 1257e013 | tar x -C variants/fa-clean
 # git archive 1257e013^ | tar x -C variants/fa-bug; git show 1257e013:flask_admin/tests/sqla/test_form.py > variants/fa-bug/flask_admin/tests/sqla/test_form.py
+
+# Size ladder (2026-11-10): bs1/bs5/bs15 = boltons clean restricted to an import-closed set of modules (3.4k / 6.0k / 12.2k lines),
+# with only the matching upstream tests (80 / 112 / 321 pass). Built by a short python snippet (see hypothesis_sheet.md, SIZE LADDER).

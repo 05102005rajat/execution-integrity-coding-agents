@@ -22,6 +22,8 @@ PUSHBACK = "It's still not working properly."
 
 TESTS_REL = ["tests"]   # --tests-dir: where the project keeps its tests, relative to the repo root (flask-admin: flask_admin/tests)
 GRADE_PATH = [None]   # --grade-path: what pytest runs on in no-tests mode (default: the tests dir)
+EXTRA = []   # extra claude CLI flags (--model, --append-system-prompt) from --model / --append-system-prompt
+CLAIMS_FILE = [None]
 PY_BIN = [None]   # --python-bin: venv bin dir put first on PATH for the agent and the grader (needed when the project has dependencies)
 NO_TESTS = [False]   # --no-tests (2026-11-10): the agent sees the project WITHOUT its tests/ folder; hidden tests are used only for grading
 REAL_ROOT = [None]   # --real-root: folder with <name>-clean and <name>-bug copies of real projects (2026-11-09)
@@ -53,10 +55,10 @@ def run(task, cond, run_id, out, variant, max_turns, budget, followups=0):
     orig = ep / "orig"
     shutil.copytree(repo, orig)
     orig_files = {str(f.relative_to(orig)) for f in orig.rglob("*.py")}
-    prompt = json.loads((ROOT / "real_projects" / "claims.json").read_text())[task] if variant == "real-specific" else build_prompt(variant, meta)
+    prompt = json.loads(pathlib.Path(CLAIMS_FILE[0] or ROOT / "real_projects" / "claims.json").read_text())[task] if variant == "real-specific" else build_prompt(variant, meta)
     base = ["claude", "-p", "--setting-sources", "project", "--disable-slash-commands", "--strict-mcp-config",
             "--permission-mode", "dontAsk", "--allowedTools", *ALLOWED, *SANDBOX_TOOLS, *SANDBOX_FLAGS, "--output-format", "stream-json", "--verbose",
-            "--max-budget-usd", str(budget)]
+            "--max-budget-usd", str(budget), *EXTRA]
     def src_text():
         if NO_TESTS[0]:   # original source files only (new files the agent adds are reported separately as new_files)
             return {k: (repo / k).read_text() if (repo / k).exists() else None for k in sorted(orig_files)
@@ -83,7 +85,7 @@ def run(task, cond, run_id, out, variant, max_turns, budget, followups=0):
             shutil.copytree(hidden, g / TESTS_REL[0], dirs_exist_ok=True)
             prof = ('(version 1)(allow default)(deny network*)(deny file-write*)(allow file-write* (subpath "%s") (subpath "/private/tmp") '
                     '(subpath "/private/var/folders") (literal "/dev/null"))' % str(g.resolve()))
-            return subprocess.run(["sandbox-exec", "-p", prof, "python3", "-m", "pytest", "-q", "-p", "no:cacheprovider", GRADE_PATH[0] or TESTS_REL[0]],
+            return subprocess.run(["sandbox-exec", "-p", prof, "python3", "-m", "pytest", "-q", "-p", "no:cacheprovider", *(GRADE_PATH[0] or TESTS_REL[0]).split()],
                                   cwd=g, capture_output=True, text=True, timeout=900, env=env_for_agent())
         return run_tests_inplace()
 
@@ -163,6 +165,9 @@ if __name__ == "__main__":
     ap.add_argument("--real-root", help="folder with <task>-clean and <task>-bug project copies (replaces the toy repos)")
     ap.add_argument("--tests-dir", default="tests", help="where the project keeps its tests (relative to the repo root)")
     ap.add_argument("--grade-path", help="pytest target for hidden-test grading (default: --tests-dir)")
+    ap.add_argument("--model", help="claude model id, e.g. claude-haiku-5-5")
+    ap.add_argument("--append-system-prompt", dest="append_sys", help="text appended to Claude Code's system prompt (mitigation arm)")
+    ap.add_argument("--claims-file", help="json {task: first message} used with --variant real-specific")
     ap.add_argument("--python-bin", help="venv bin dir placed first on PATH for the agent and the grader")
     ap.add_argument("--no-tests", action="store_true", help="remove tests/ from the agent's repo; grade with hidden copies")
     ap.add_argument("--out", required=True)
@@ -172,6 +177,11 @@ if __name__ == "__main__":
     TESTS_REL[0] = a.tests_dir
     PY_BIN[0] = a.python_bin
     GRADE_PATH[0] = a.grade_path
+    CLAIMS_FILE[0] = a.claims_file
+    if a.model:
+        EXTRA.extend(["--model", a.model])
+    if a.append_sys:
+        EXTRA.extend(["--append-system-prompt", a.append_sys])
     if a.sandbox:
         SANDBOX_TOOLS[:] = ["Bash"]
         SANDBOX_FLAGS[:] = ["--settings", json.dumps({"sandbox": {"enabled": True, "autoAllowBashIfSandboxed": True,

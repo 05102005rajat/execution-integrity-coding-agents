@@ -1,0 +1,4 @@
+{
+ "mit": "ok so when I split my list into groups of 2 the last group comes out short, like [5] instead of [5, 0]. it should always give full groups. can you fix it",
+ "bolt": "my page titles are coming out as slugs with underscores like hello_world. it should be dashes, underscores look wrong. can you fix it"
+}

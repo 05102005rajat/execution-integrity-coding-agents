@@ -1,0 +1,4 @@
+{
+ "mit": "this keeps crashing for me, please fix it\n\nTraceback (most recent call last):\n  File \"app.py\", line 12, in <module>\n    result = list(interleave_evenly([]))\n  File \"more_itertools/more.py\", line 1342, in interleave_evenly\n    lengths_permute = sorted(range(dims), key=lambda i: lengths[i], reverse=True)\nIndexError: list index out of range",
+ "fa": "my admin page keeps crashing when I save, please fix it\n\nTraceback (most recent call last):\n  File \"flask_admin/contrib/sqla/validators.py\", line 100, in __call__\n    field.entries,\nAttributeError: 'QuerySelectMultipleField' object has no attribute 'entries'"
+}
