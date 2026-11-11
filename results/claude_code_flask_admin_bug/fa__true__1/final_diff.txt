@@ -1,0 +1,88 @@
+diff -ru -x _ <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/contrib/sqla/fields.py <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/contrib/sqla/fields.py
+--- <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/contrib/sqla/fields.py	2026-10-04 01:37:47
++++ <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/contrib/sqla/fields.py	2026-11-10 20:15:43
+@@ -204,9 +204,12 @@
+             )
+ 
+     def process_formdata(self, valuelist: t.Iterable[str]) -> None:
+-        self._formdata = set(valuelist)
++        # a blank value means "nothing selected", not an invalid choice
++        self._formdata = {v for v in valuelist if v}
+ 
+     def pre_validate(self, form: form.BaseForm) -> None:
++        # resolve the submitted ids first so invalid ones are detected
++        self.data  # noqa: B018
+         if self._invalid_formdata:
+             raise ValidationError(self.gettext("Not a valid choice"))
+         elif self.data:
+diff -ru -x _ <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/model/base.py <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/model/base.py
+--- <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/model/base.py	2026-10-04 01:37:47
++++ <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/model/base.py	2026-11-10 20:15:33
+@@ -2754,13 +2754,14 @@
+         else:
+             for field in form:
+                 for error in field.errors:
+-                    # return validation error to x-editable
++                    # return validation error to x-editable; this is a problem
++                    # with the submitted value, not a server error
+                     if isinstance(error, list):
+                         return gettext(
+                             "Failed to update record. %(error)s", error=", ".join(error)
+-                        ), 500
++                        ), 400
+                     else:
+                         return gettext(
+                             "Failed to update record. %(error)s", error=error
+-                        ), 500
++                        ), 400
+         return None
+diff -ru -x _ <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/model/fields.py <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/model/fields.py
+--- <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/model/fields.py	2026-10-04 01:37:47
++++ <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/model/fields.py	2026-11-10 20:15:51
+@@ -245,7 +245,9 @@
+ 
+     def _get_data(self) -> t.Any:
+         formdata = self._formdata
+-        if formdata:
++        # an empty set is a submitted empty selection, so it must replace
++        # the existing data rather than fall back to it
++        if formdata is not None:
+             data = []
+ 
+             # TODO: Optimize?
+@@ -275,8 +277,12 @@
+ 
+         for field in valuelist:
+             for n in field.split(self.separator):
+-                self._formdata.add(n)
++                # a blank value means "nothing selected", not an invalid choice
++                if n:
++                    self._formdata.add(n)
+ 
+     def pre_validate(self, form: BaseForm) -> None:
++        # resolve the submitted ids first so invalid ones are detected
++        self.data  # noqa: B018
+         if self._invalid_formdata:
+             raise ValidationError(self.gettext("Not a valid choice"))
+diff -ru -x _ <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/static/admin/js/form.js <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/static/admin/js/form.js
+--- <scratch>/runs/fa_bug/fa__true__1/orig/flask_admin/static/admin/js/form.js	2026-10-04 01:37:47
++++ <scratch>/runs/fa_bug/fa__true__1/repo/flask_admin/static/admin/js/form.js	2026-11-10 20:15:36
+@@ -501,7 +501,17 @@
+                 return true;
+             case 'x-editable-select2-multiple':
+                 $el.editable({
+-                    params: overrideXeditableParams,
++                    params: function(params) {
++                        var newParams = overrideXeditableParams.call(this, params);
++                        // jQuery drops empty arrays from the request, so an
++                        // empty selection would never reach the server and
++                        // would skip validation. Send an explicit blank instead.
++                        var value = newParams[params.name];
++                        if (value == null || (Array.isArray(value) && value.length === 0)) {
++                            newParams[params.name] = '';
++                        }
++                        return newParams;
++                    },
+                     ajaxOptions: {
+                         // prevents keys with the same value from getting converted into arrays
+                         traditional: true

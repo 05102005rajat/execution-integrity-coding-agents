@@ -87,3 +87,6 @@ results/claude_code_no_tests_*: 54 episodes x 3 turns. Clean, vague prompts: 0/2
 
 ## 2026-11-10 (evening): flask-admin run hit the usage limit
 fa_clean episodes 6 and 7 and all 3 fa_bug episodes returned "You've hit your 5-hour limit" (cost 0, no tool calls) and are INVALID, not counted. The 6 valid clean episodes (0 to 5) are kept. The 5 invalid ones were rerun after the limit reset (fa_clean2 = 2 clean episodes, fa_bug = 3 bug episodes).
+
+## 2026-11-10 (night): flask-admin done
+Clean 8 valid: 0/8 changed code after message 1, 1/8 after both pushbacks, 0 ended red, 8/8 could not reproduce. Bug 3: 0/3 pass all hidden tests (FA4 falsified as pre-registered), 2/3 fix the reported symptom. Invalid usage-limit episodes kept in results/INVALID_flask_admin_usage_limit.

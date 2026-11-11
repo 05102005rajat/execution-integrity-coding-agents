@@ -1,0 +1,33 @@
+diff -ru -x _ <scratch>/runs/fa_bug/fa__true__0/orig/flask_admin/contrib/sqla/validators.py <scratch>/runs/fa_bug/fa__true__0/repo/flask_admin/contrib/sqla/validators.py
+--- <scratch>/runs/fa_bug/fa__true__0/orig/flask_admin/contrib/sqla/validators.py	2026-10-04 01:37:47
++++ <scratch>/runs/fa_bug/fa__true__0/repo/flask_admin/contrib/sqla/validators.py	2026-11-10 20:11:28
+@@ -97,17 +97,24 @@
+         self.min = min
+ 
+     def __call__(self, form: BaseForm, field: Field) -> None:
+-        items = filter_list(
+-            lambda e: not field.should_delete(e),  # type:ignore[attr-defined]
+-            field.entries,  # type:ignore[attr-defined]
+-        )
++        if hasattr(field, "entries"):
++            # Inline list fields: ignore entries marked for deletion
++            items = filter_list(
++                lambda e: not field.should_delete(e),  # type:ignore[attr-defined]
++                field.entries,
++            )
++        else:
++            # Multi-select relation fields (e.g. QuerySelectMultipleField,
++            # AjaxSelectMultipleField) hold the selected objects in ``data``
++            items = list(field.data or [])
++
+         if len(items) < self.min:
+             if self.message is None:
+                 message = field.ngettext(
+                     "At least %(num)d item is required",
+                     "At least %(num)d items are required",
+                     self.min,
+-                )
++                ) % {"num": self.min}
+             else:
+                 message = self.message
+ 
