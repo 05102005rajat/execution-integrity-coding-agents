@@ -96,3 +96,6 @@ The Mac rebooted at 23:35 and the temporary scratch folder (variants, venv, clon
 
 ## 2026-11-11: post-reboot queue finished (all arms except the ladder)
 Queue chain ended with QUEUE_DONE; no episode returned the usage-limit message. The ladder arm (e_ladder) crashed at start (FileNotFoundError: variants/bs1-clean); the folders were copied to the -clean names and the arm relaunched on its own. Results and scoring are in hypothesis_sheet.md under "2026-11-11".
+
+## 2026-11-12: ladder scored, session-history cleanup, one-big-repo plan
+Ladder (E1) holds: 4/4, 2/4, 2/4 by size. Removed 504 headless experiment session folders from ~/.claude/projects (hashed .work paths and old scratchpad cc-* probes); all transcripts are kept in results/ and the run folders. Next: flask-admin only (FB1 to FB4, pre-registered in hypothesis_sheet.md), queue2.sh.
