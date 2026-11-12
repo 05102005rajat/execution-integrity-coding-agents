@@ -99,3 +99,6 @@ Queue chain ended with QUEUE_DONE; no episode returned the usage-limit message. 
 
 ## 2026-11-12: ladder scored, session-history cleanup, one-big-repo plan
 Ladder (E1) holds: 4/4, 2/4, 2/4 by size. Removed 504 headless experiment session folders from ~/.claude/projects (hashed .work paths and old scratchpad cc-* probes); all transcripts are kept in results/ and the run folders. Next: flask-admin only (FB1 to FB4, pre-registered in hypothesis_sheet.md), queue2.sh.
+
+## 2026-11-12: queue2 (flask-admin FB1 to FB4) finished
+0/20 edited. Scoring and validity problem 5 (disk reads outside the repo, user name appearing in a reply) in hypothesis_sheet.md.
