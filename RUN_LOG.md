@@ -102,3 +102,5 @@ Ladder (E1) holds: 4/4, 2/4, 2/4 by size. Removed 504 headless experiment sessio
 
 ## 2026-11-12: queue2 (flask-admin FB1 to FB4) finished
 0/20 edited. Scoring and validity problem 5 (disk reads outside the repo, user name appearing in a reply) in hypothesis_sheet.md.
+
+## 2026-11-12: Natively arms finished: 0/10 edits, all refusals (safety), invalid for the verify-or-act question. Logged in hypothesis_sheet.md. Natively dropped.
