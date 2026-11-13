@@ -113,3 +113,6 @@ Plain 3/5 edited (all after pushback, all hard-code the setting off), reproduce-
 
 ## 2026-11-12 (19:10): jailed queue hit the usage limit
 NN1-J valid (5/5 edits at message 1). 15 episodes of NN2-J, BB1-J, BB2-J invalid (usage limit), set aside; rerun queued for after 10pm.
+
+## 2026-11-13: jailed reruns finished
+NN1-J 5/5, NN2-J 0/5, BB1-J 2/5, BB2-J 0/5; invalid usage-limit episodes archived in results/INVALID_usage_limit_2026-11-12. Scoring in hypothesis_sheet.md.
