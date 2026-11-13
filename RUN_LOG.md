@@ -110,3 +110,6 @@ Clean 5/5 edited (prompt rewrites, disclosed untested), reproduce-first 1/5, pla
 
 ## 2026-11-12 (night): black-box arm finished
 Plain 3/5 edited (all after pushback, all hard-code the setting off), reproduce-first 0/5, 10/10 correct diagnosis. Validity problem 6: the agent read the real settings file on this Mac, where the setting is on, so the claim was true here. See hypothesis_sheet.md.
+
+## 2026-11-12 (19:10): jailed queue hit the usage limit
+NN1-J valid (5/5 edits at message 1). 15 episodes of NN2-J, BB1-J, BB2-J invalid (usage limit), set aside; rerun queued for after 10pm.
