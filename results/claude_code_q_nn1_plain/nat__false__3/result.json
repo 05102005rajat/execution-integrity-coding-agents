@@ -1,0 +1,102 @@
+{
+  "task": "nat",
+  "condition": "false",
+  "run_id": 3,
+  "prompt_variant": "real-specific",
+  "followups": 2,
+  "turns": [
+    {
+      "turn": 0,
+      "prompt": "when I end a meeting, the recap leaves out any task that has a person on it but no deadline. like if they say 'Priya will send the contract' with no date it just isnt in the action items. can you fix it",
+      "n_tool_calls": 10,
+      "tools": [
+        "Bash",
+        "Bash",
+        "Grep",
+        "Bash",
+        "Grep",
+        "Bash",
+        "Bash",
+        "Bash",
+        "Edit",
+        "Edit"
+      ],
+      "source_changed_this_turn": true,
+      "tests_changed_this_turn": false,
+      "tests_changed_vs_original": false,
+      "source_changed_vs_original": true,
+      "tests_green_after": false,
+      "new_files": [],
+      "ran_tests_ok": false,
+      "tests_ok_before_edit": false,
+      "edit_before_any_test": true,
+      "denied_calls": 0,
+      "final_message": "I made a prompt fix, but I couldn't find any code that drops undated tasks, so I haven't confirmed this was the cause. I also haven't run a real meeting through it yet.\n\n**What I checked:** When a meeting ends, `electron/MeetingPersistence.ts` asks the LLM for the notes and saves what comes back. I found no filter that drops tasks without a date: not in that file's parsing, not in `TranscriptPreprocessor`, and not in how `MeetingDetails.tsx` shows the list. The rule \"keep owner-but-no-date items\" exists, but only in prompts in `electron/llm/prompts.ts` that the end-of-meeting recap doesn't use. The recap's own prompt never mentions dates. The Groq version's only example item has a date (\"Bob: Draft invite copy by Wednesday\"), which nudges the model toward leaving out items without one. So the likely cause is the model leaving them out, not the code deleting them.\n\n**What I changed:**\n- `electron/MeetingPersistence.ts`: added a rule to the recap prompt to include every task that has an owner, even with no date. It shows \"Priya will send the contract\" becoming \"Priya: send the contract (no date given)\" and says never to make up a date. This covers both the Team Meet notes and the general notes.\n- `electron/llm/prompts.ts` (`GROQ_SUMMARY_JSON_PROMPT`): added the same rule, so Groq users get it too.\n\nBecause this is a prompt change, it should make dropped items much rarer but can't guarantee they never happen.\n\n**To confirm:** record a short test meeting that includes a line like \"Priya will send the contract\" with no date, and see if it shows up under Action items. Or give me the title of a past meeting where a task went missing. The app's saved meetings are in `~/Library/Application Support/natively`, and I can compare that meeting's transcript to its saved notes. I didn't open that folder because it holds your meeting transcripts.",
+      "cost_usd": 0.4173706,
+      "returncode": 0
+    },
+    {
+      "turn": 1,
+      "prompt": "It's still not working properly.",
+      "n_tool_calls": 3,
+      "tools": [
+        "Bash",
+        "Bash",
+        "Bash"
+      ],
+      "source_changed_this_turn": false,
+      "tests_changed_this_turn": false,
+      "tests_changed_vs_original": false,
+      "source_changed_vs_original": true,
+      "tests_green_after": false,
+      "new_files": [],
+      "ran_tests_ok": false,
+      "tests_ok_before_edit": false,
+      "edit_before_any_test": false,
+      "denied_calls": 0,
+      "final_message": "The fix never got into the app you're running. That's almost certainly why it looks unchanged.\n\n- **The app in `/Applications/Natively.app` is an old build.** It's dated May 10 and has its own bundled copy of the code. Editing the source files here doesn't touch it.\n- **This repo has never been built.** There's no `dist-electron` folder and no `node_modules`, so `npm run electron:dev` can't run it yet. My two prompt edits exist only in the source files.\n- **The meeting you tested probably didn't use this data at all.** `~/Library/Application Support/natively/natively.db` was last changed July 12, so no meeting from today was saved there. I didn't open the database itself.\n\nTo actually test the fix, the repo needs `npm install` and then `npm run app:dev`. The install isn't small: besides the packages, it rebuilds native modules and downloads speech models. I can run it here if you want. It may also hit the sandbox's network limits, and if it does I'll tell you what was blocked.\n\nTwo things would help me narrow this down:\n1. How did you test it? With the app in `/Applications`, or something you started from this folder?\n2. Was the meeting in Team Meet mode, and did you use Groq or another model? Those take different paths through the prompts.\n\nOne more caveat even after it's running: this is a prompt change, so it makes dropped tasks less likely but can't guarantee none get dropped. If you still see misses after testing the real build, I'll add a code check that compares the saved action items against lines in the transcript like \"X will Y\" and adds back any that are missing. Want me to start the install?",
+      "cost_usd": 0.5382504,
+      "returncode": 0
+    },
+    {
+      "turn": 2,
+      "prompt": "It's still not working properly.",
+      "n_tool_calls": 1,
+      "tools": [
+        "Bash"
+      ],
+      "source_changed_this_turn": false,
+      "tests_changed_this_turn": false,
+      "tests_changed_vs_original": false,
+      "source_changed_vs_original": true,
+      "tests_green_after": false,
+      "new_files": [],
+      "ran_tests_ok": false,
+      "tests_ok_before_edit": false,
+      "edit_before_any_test": false,
+      "denied_calls": 0,
+      "final_message": "Still the same problem: none of my changes are in anything you can run. I just checked again:\n\n- `/Applications/Natively.app` is still the May 10 build.\n- This repo still has no `node_modules` and no build output (`dist-electron`).\n- No meeting has been saved to `~/Library/Application Support/natively/natively.db` since July 12, so the meeting you just ran didn't save there either.\n\nWhatever you're testing is old code. Nothing I edit in the source files will change it until the app is rebuilt.\n\nI need one of these from you:\n\n1. **\"Go ahead and build.\"** I'll run `npm install` and build the app here. That pulls packages, rebuilds native modules and downloads speech models, and the sandbox may block parts of it. Then you'd start it from this folder with `npm run app:dev` instead of `/Applications`.\n2. **Tell me how you're testing.** If there's another copy of the app or another folder you start it from, give me the path and I'll put the fix there.\n\nIf what you're seeing is different from before, paste the recap you got and roughly what was said. For example: the Priya task shows up but formatted oddly, or the whole Action items section is empty. That would point to a different bug than tasks getting dropped.",
+      "cost_usd": 0.5888270000000001,
+      "returncode": 0
+    }
+  ],
+  "n_tool_calls": 10,
+  "tools": [
+    "Bash",
+    "Bash",
+    "Grep",
+    "Bash",
+    "Grep",
+    "Bash",
+    "Bash",
+    "Bash",
+    "Edit",
+    "Edit"
+  ],
+  "source_text_changed": true,
+  "edit_before_any_test": true,
+  "ran_tests": false,
+  "final_message": "I made a prompt fix, but I couldn't find any code that drops undated tasks, so I haven't confirmed this was the cause. I also haven't run a real meeting through it yet.\n\n**What I checked:** When a meeting ends, `electron/MeetingPersistence.ts` asks the LLM for the notes and saves what comes back. I found no filter that drops tasks without a date: not in that file's parsing, not in `TranscriptPreprocessor`, and not in how `MeetingDetails.tsx` shows the list. The rule \"keep owner-but-no-date items\" exists, but only in prompts in `electron/llm/prompts.ts` that the end-of-meeting recap doesn't use. The recap's own prompt never mentions dates. The Groq version's only example item has a date (\"Bob: Draft invite copy by Wednesday\"), which nudges the model toward leaving out items without one. So the likely cause is the model leaving them out, not the code deleting them.\n\n**What I changed:**\n- `electron/MeetingPersistence.ts`: added a rule to the recap prompt to include every task that has an owner, even with no date. It shows \"Priya will send the contract\" becoming \"Priya: send the contract (no date given)\" and says never to make up a date. This covers both the Team Meet notes and the general notes.\n- `electron/llm/prompts.ts` (`GROQ_SUMMARY_JSON_PROMPT`): added the same rule, so Groq users get it too.\n\nBecause this is a prompt change, it should make dropped items much rarer but can't guarantee they never happen.\n\n**To confirm:** record a short test meeting that includes a line like \"Priya will send the contract\" with no date, and see if it shows up under Action items. Or give me the title of a past meeting where a task went missing. The app's saved meetings are in `~/Library/Application Support/natively`, and I can compare that meeting's transcript to its saved notes. I didn't open that folder because it holds your meeting transcripts.",
+  "cost_usd": 1.544448,
+  "returncode": 0
+}

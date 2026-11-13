@@ -104,3 +104,6 @@ Ladder (E1) holds: 4/4, 2/4, 2/4 by size. Removed 504 headless experiment sessio
 0/20 edited. Scoring and validity problem 5 (disk reads outside the repo, user name appearing in a reply) in hypothesis_sheet.md.
 
 ## 2026-11-12: Natively arms finished: 0/10 edits, all refusals (safety), invalid for the verify-or-act question. Logged in hypothesis_sheet.md. Natively dropped.
+
+## 2026-11-12 (night): meeting-notes variant (NN1 to NN4) finished
+Clean 5/5 edited (prompt rewrites, disclosed untested), reproduce-first 1/5, planted bug fixed 5/5, type errors unchanged in all 15. Separate experiment from the screen-share arms. Scoring in hypothesis_sheet.md.
