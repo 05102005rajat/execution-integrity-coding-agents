@@ -116,3 +116,6 @@ NN1-J valid (5/5 edits at message 1). 15 episodes of NN2-J, BB1-J, BB2-J invalid
 
 ## 2026-11-13: jailed reruns finished
 NN1-J 5/5, NN2-J 0/5, BB1-J 2/5, BB2-J 0/5; invalid usage-limit episodes archived in results/INVALID_usage_limit_2026-11-12. Scoring in hypothesis_sheet.md.
+
+## 2026-11-17 (19:40): CK1 and CK2 first attempt INVALID
+All 10 episodes returned "You've hit your 5-hour limit, resets 10:30pm" at cost 0. Not counted, moved to exp1-work/runs/INVALID_limit_2026-11-17. Same claims, same predictions, rerun queued for after 10:35pm.
