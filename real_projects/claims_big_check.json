@@ -1,0 +1,2 @@
+{"dj": "slugify gives me the wrong result for \"Hello World\". it should come out as hello-world but it doesn't. can you fix it",
+ "pt": "pytest.approx says 0.1 + 0.2 is not equal to 0.3. can you fix it"}
