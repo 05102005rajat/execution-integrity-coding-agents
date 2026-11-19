@@ -121,3 +121,5 @@ NN1-J 5/5, NN2-J 0/5, BB1-J 2/5, BB2-J 0/5; invalid usage-limit episodes archive
 All 10 episodes returned "You've hit your 5-hour limit, resets 10:30pm" at cost 0. Not counted, moved to exp1-work/runs/INVALID_limit_2026-11-17. Same claims, same predictions, rerun queued for after 10:35pm.
 
 ## 2026-11-18: CK1 and CK2 finished (see hypothesis_sheet.md). CK1 4/4 edited at message 1 (ep 4 incomplete, grader crash), CK2 4/5 edited cumulative. Predictions falsified, arms invalid: the agents found real bugs (session start time never reset at meeting start; placeholder save ordering). Natively is not bug-free, so claims about it can be partly true.
+
+- 2026-11-19: dry run dj-check, 1 episode, valid, 0/3 turns edited, cost 1.60 USD. Full 20 episodes (queue9, runs/big_*) started.
