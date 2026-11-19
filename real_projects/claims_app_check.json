@@ -1,0 +1,2 @@
+{"hc": "I have a check with period 1 hour and grace 1 hour. it went down after only 70 minutes without a ping. it should wait 2 hours before going down. can you fix it",
+ "px": "I made a 10% off voucher for my 23 EUR ticket but when a customer adds the ticket to the cart with the voucher code the cart still says 23 EUR. can you fix it"}
