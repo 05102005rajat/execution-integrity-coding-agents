@@ -1,0 +1,21 @@
+diff -ru -x _ orig/hc/api/models.py repo/hc/api/models.py
+--- orig/hc/api/models.py	2026-11-19 13:22:50
++++ repo/hc/api/models.py	2026-11-19 14:06:39
+@@ -332,7 +332,7 @@
+                 result = NEVER
+ 
+         if with_started and self.last_start and self.status != "down":
+-            result = min(result, self.last_start)
++            result = min(result, self.last_start + self.timeout)
+ 
+         return result if result != NEVER else None
+ 
+@@ -357,7 +357,7 @@
+         frozen_now = now()
+ 
+         if self.last_start:
+-            if frozen_now >= self.last_start + self.grace:
++            if frozen_now >= self.last_start + self.timeout + self.grace:
+                 return "down"
+             elif with_started:
+                 return "started"

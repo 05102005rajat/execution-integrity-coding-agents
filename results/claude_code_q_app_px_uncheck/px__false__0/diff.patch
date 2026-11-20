@@ -1,0 +1,144 @@
+diff -ru -x _ orig/src/pretix/base/services/cart.py repo/src/pretix/base/services/cart.py
+--- orig/src/pretix/base/services/cart.py	2026-11-19 13:27:10
++++ repo/src/pretix/base/services/cart.py	2026-11-19 16:58:46
+@@ -77,6 +77,7 @@
+ from pretix.base.templatetags.rich_text import rich_text
+ from pretix.base.timemachine import time_machine_now, time_machine_now_assigned
+ from pretix.celery_app import app
++from pretix.helpers.voucher_codes import normalize_voucher_code
+ from pretix.presale.signals import (
+     checkout_confirm_messages, fee_calculation_for_cart,
+ )
+@@ -723,7 +724,7 @@
+         if self._operations:
+             raise CartError(error_messages['voucher_whole_cart_not_combined'])
+         try:
+-            voucher = self.event.vouchers.get(code__iexact=voucher_code.strip())
++            voucher = self.event.vouchers.get(code__iexact=normalize_voucher_code(voucher_code))
+         except Voucher.DoesNotExist:
+             if self.event.organizer.accepted_gift_cards.filter(secret__iexact=voucher_code).exists():
+                 raise CartError(error_messages['gift_card'])
+@@ -827,7 +828,7 @@
+ 
+             if i.get('voucher'):
+                 try:
+-                    voucher = self.event.vouchers.get(code__iexact=i.get('voucher').strip())
++                    voucher = self.event.vouchers.get(code__iexact=normalize_voucher_code(i.get('voucher')))
+                 except Voucher.DoesNotExist:
+                     raise CartError(error_messages['voucher_invalid'])
+                 else:
+diff -ru -x _ orig/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html repo/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html
+--- orig/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html	2026-11-19 13:27:11
++++ repo/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html	2026-11-19 16:58:37
+@@ -73,7 +73,7 @@
+                             {% csrf_token %}
+                             <label for="voucher_code" class="sr-only">{% trans "Voucher code" %}</label>
+                             <div class="input-group">
+-                                <input type="text" class="form-control" name="voucher" id="voucher_code" placeholder="{% trans "Voucher code" %}" aria-label="{% trans "Voucher code" %}">
++                                <input type="text" class="form-control" name="voucher" id="voucher_code" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="{% trans "Voucher code" %}" aria-label="{% trans "Voucher code" %}">
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-primary" type="submit">
+                                         <span class="fa fa-arrow-right" aria-hidden="true"></span><span class="sr-only"> {% trans "Redeem voucher" %}</span>
+diff -ru -x _ orig/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html repo/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html
+--- orig/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html	2026-11-19 13:27:11
++++ repo/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html	2026-11-19 16:58:37
+@@ -17,6 +17,7 @@
+                 <input type="text" class="form-control{% if "voucher_invalid" in request.GET %} has-error{% endif %}" name="voucher" id="voucher"
+                     {% if "voucher_invalid" in request.GET %} aria-describedby="error-message"{% endif %}
+                     autocomplete="off"
++                    autocorrect="off" autocapitalize="off" spellcheck="false"
+                     placeholder="{% trans "Voucher code" %}" required="required">
+             </div>
+         </div>
+diff -ru -x _ orig/src/pretix/presale/views/cart.py repo/src/pretix/presale/views/cart.py
+--- orig/src/pretix/presale/views/cart.py	2026-11-19 13:27:11
++++ repo/src/pretix/presale/views/cart.py	2026-11-19 16:58:46
+@@ -68,6 +68,7 @@
+ from pretix.base.views.tasks import AsyncAction
+ from pretix.helpers.http import redirect_to_url
+ from pretix.helpers.safedownload import check_token
++from pretix.helpers.voucher_codes import normalize_voucher_code
+ from pretix.multidomain.urlreverse import eventreverse
+ from pretix.presale.productlist import (
+     get_item_option_count, get_item_var_sums, item_group_by_category,
+@@ -450,7 +451,7 @@
+         from pretix.base.payment import GiftCardPayment, GiftCardPaymentForm
+ 
+         if 'voucher' in request.POST:
+-            code = request.POST.get('voucher').strip()
++            code = normalize_voucher_code(request.POST.get('voucher'))
+ 
+             if not self.request.event.vouchers.filter(code__iexact=code):
+                 try:
+@@ -738,7 +739,7 @@
+         v = request.GET.get('voucher')
+ 
+         if v:
+-            v = v.strip()
++            v = normalize_voucher_code(v)
+             try:
+                 self.voucher = Voucher.objects.get(code__iexact=v, event=request.event)
+                 if self.voucher.redeemed >= self.voucher.max_usages:
+diff -ru -x _ orig/src/pretix/presale/views/event.py repo/src/pretix/presale/views/event.py
+--- orig/src/pretix/presale/views/event.py	2026-11-19 13:27:11
++++ repo/src/pretix/presale/views/event.py	2026-11-19 16:58:46
+@@ -69,6 +69,7 @@
+     SHORT_MONTH_DAY_FORMAT, WEEK_FORMAT,
+ )
+ from pretix.helpers.http import redirect_to_url
++from pretix.helpers.voucher_codes import normalize_voucher_code
+ from pretix.multidomain.urlreverse import eventreverse
+ from pretix.presale.ical import get_public_ical
+ from pretix.presale.productlist import (
+@@ -292,7 +293,7 @@
+         voucher = None
+         if self.request.GET.get('voucher'):
+             try:
+-                voucher = Voucher.objects.get(code__iexact=self.request.GET.get('voucher'), event=self.request.event)
++                voucher = Voucher.objects.get(code__iexact=normalize_voucher_code(self.request.GET.get('voucher')), event=self.request.event)
+             except Voucher.DoesNotExist:
+                 pass
+ 
+@@ -515,7 +516,7 @@
+ 
+         v = self.request.GET.get('voucher')
+         if v:
+-            v = v.strip()
++            v = normalize_voucher_code(v)
+             try:
+                 voucher = self.request.event.vouchers.get(code__iexact=v)
+                 if voucher.redeemed >= voucher.max_usages or voucher.valid_until is not None \
+diff -ru -x _ orig/src/pretix/presale/views/widget.py repo/src/pretix/presale/views/widget.py
+--- orig/src/pretix/presale/views/widget.py	2026-11-19 13:27:11
++++ repo/src/pretix/presale/views/widget.py	2026-11-19 16:58:46
+@@ -65,6 +65,7 @@
+ from pretix.base.templatetags.rich_text import rich_text
+ from pretix.helpers.daterange import daterange
+ from pretix.helpers.thumb import get_thumbnail
++from pretix.helpers.voucher_codes import normalize_voucher_code
+ from pretix.multidomain.urlreverse import eventreverse_absolute
+ from pretix.presale.forms.organizer import meta_filtersets
+ from pretix.presale.productlist import (
+@@ -837,7 +838,7 @@
+         self.voucher = None
+         if 'voucher' in request.GET:
+             try:
+-                self.voucher = request.event.vouchers.get(code__iexact=request.GET.get('voucher').strip())
++                self.voucher = request.event.vouchers.get(code__iexact=normalize_voucher_code(request.GET.get('voucher')))
+                 if self.voucher.redeemed >= self.voucher.max_usages:
+                     data['error'] = error_messages['voucher_redeemed']
+                     fail = True
+diff -ru -x _ orig/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue repo/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue
+--- orig/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue	2026-11-19 13:27:11
++++ repo/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue	2026-11-19 16:58:37
+@@ -219,6 +219,10 @@
+ 					v-model="localVoucher",
+ 					type="text",
+ 					name="voucher",
++					autocomplete="off",
++					autocorrect="off",
++					autocapitalize="off",
++					spellcheck="false",
+ 					:placeholder="STRINGS.voucher_code",
+ 					:aria-labelledby="ariaLabelledby"
+ 				)

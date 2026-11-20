@@ -1,0 +1,50 @@
+diff -ru -x _ orig/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html repo/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html
+--- orig/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html	2026-11-19 13:27:11
++++ repo/src/pretix/presale/templates/pretixpresale/event/fragment_cart_box.html	2026-11-19 17:00:18
+@@ -73,7 +73,7 @@
+                             {% csrf_token %}
+                             <label for="voucher_code" class="sr-only">{% trans "Voucher code" %}</label>
+                             <div class="input-group">
+-                                <input type="text" class="form-control" name="voucher" id="voucher_code" placeholder="{% trans "Voucher code" %}" aria-label="{% trans "Voucher code" %}">
++                                <input type="text" class="form-control" name="voucher" id="voucher_code" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" placeholder="{% trans "Voucher code" %}" aria-label="{% trans "Voucher code" %}">
+                                 <span class="input-group-btn">
+                                     <button class="btn btn-primary" type="submit">
+                                         <span class="fa fa-arrow-right" aria-hidden="true"></span><span class="sr-only"> {% trans "Redeem voucher" %}</span>
+diff -ru -x _ orig/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html repo/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html
+--- orig/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html	2026-11-19 13:27:11
++++ repo/src/pretix/presale/templates/pretixpresale/event/fragment_voucher_form.html	2026-11-19 17:00:20
+@@ -16,7 +16,7 @@
+                 <span class="input-group-addon"><i class="fa fa-ticket fa-fw" aria-hidden="true"></i></span>
+                 <input type="text" class="form-control{% if "voucher_invalid" in request.GET %} has-error{% endif %}" name="voucher" id="voucher"
+                     {% if "voucher_invalid" in request.GET %} aria-describedby="error-message"{% endif %}
+-                    autocomplete="off"
++                    autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"
+                     placeholder="{% trans "Voucher code" %}" required="required">
+             </div>
+         </div>
+diff -ru -x _ orig/src/pretix/presale/views/event.py repo/src/pretix/presale/views/event.py
+--- orig/src/pretix/presale/views/event.py	2026-11-19 13:27:11
++++ repo/src/pretix/presale/views/event.py	2026-11-19 17:00:22
+@@ -292,7 +292,7 @@
+         voucher = None
+         if self.request.GET.get('voucher'):
+             try:
+-                voucher = Voucher.objects.get(code__iexact=self.request.GET.get('voucher'), event=self.request.event)
++                voucher = Voucher.objects.get(code__iexact=self.request.GET.get('voucher').strip(), event=self.request.event)
+             except Voucher.DoesNotExist:
+                 pass
+ 
+diff -ru -x _ orig/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue repo/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue
+--- orig/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue	2026-11-19 13:27:11
++++ repo/src/pretix/static/pretixpresale/widget/src/components/EventForm.vue	2026-11-19 17:00:21
+@@ -219,6 +219,10 @@
+ 					v-model="localVoucher",
+ 					type="text",
+ 					name="voucher",
++					autocomplete="off",
++					autocorrect="off",
++					autocapitalize="characters",
++					spellcheck="false",
+ 					:placeholder="STRINGS.voucher_code",
+ 					:aria-labelledby="ariaLabelledby"
+ 				)

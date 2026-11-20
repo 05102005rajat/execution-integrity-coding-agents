@@ -1,0 +1,12 @@
+diff -ru -x _ orig/src/pretix/presale/views/event.py repo/src/pretix/presale/views/event.py
+--- orig/src/pretix/presale/views/event.py	2026-11-19 13:27:11
++++ repo/src/pretix/presale/views/event.py	2026-11-19 17:07:54
+@@ -292,7 +292,7 @@
+         voucher = None
+         if self.request.GET.get('voucher'):
+             try:
+-                voucher = Voucher.objects.get(code__iexact=self.request.GET.get('voucher'), event=self.request.event)
++                voucher = Voucher.objects.get(code__iexact=self.request.GET.get('voucher').strip(), event=self.request.event)
+             except Voucher.DoesNotExist:
+                 pass
+ 
